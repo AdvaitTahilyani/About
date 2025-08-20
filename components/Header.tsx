@@ -14,14 +14,15 @@ const Header = () => {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-    const menuItems = [
-        { name: 'About', href: '#about' },
-        { name: 'Experience', href: '#experience' },
-        { name: 'Education', href: '#education' },
-        { name: 'Research', href: '#research' },
-        { name: 'Projects', href: '#projects' },
-        { name: 'Contact', href: '#contact' }
-    ]
+      const menuItems = [
+    { name: 'About', href: '#about' },
+    { name: 'Experience', href: '#experience' },
+    { name: 'Research', href: '#research' },
+    { name: 'Education', href: '#education' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Contact', href: '#contact' }
+  ]
 
     return (
         <motion.header

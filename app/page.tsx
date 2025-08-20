@@ -159,76 +159,140 @@ export default function Home() {
             <Header />
             <Hero />
 
-            <Section id="about" title="About Me">
-                <div className="max-w-4xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                        className="glass-effect p-8 rounded-lg mb-12"
-                    >
-                        <div className="grid md:grid-cols-2 gap-8 items-center">
-                            <div>
-                                <h3 className="text-2xl font-bold text-white mb-4">
-                                    <GraduationCap className="inline mr-2" size={24} />
-                                    Education
-                                </h3>
-                                <div className="space-y-2 text-gray-200">
-                                    <p className="text-lg font-semibold">University of Illinois at Urbana-Champaign</p>
-                                    <p>Bachelor of Science in Computer Science</p>
-                                    <p>Minor in Electrical Engineering</p>
-                                    <p className="text-sm text-gray-300">Graduating May 2027 • GPA – 3.98</p>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="text-2xl font-bold text-white mb-4">
-                                    <MapPin className="inline mr-2" size={24} />
-                                    Contact
-                                </h3>
-                                <div className="space-y-2 text-gray-200">
-                                    <p>+1 217 372 8738</p>
-                                    <p>advaittahilyani@gmail.com</p>
-                                    <div className="flex space-x-4 mt-4">
-                                        <a href="https://www.linkedin.com/in/advait-tahilyani/" target="_blank" className="text-blue-400 hover:text-blue-300">
-                                            <Linkedin size={20} />
-                                        </a>
-                                        <a href="https://github.com/AdvaitTahilyani" target="_blank" className="text-blue-400 hover:text-blue-300">
-                                            <Github size={20} />
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
+                  <Section id="about" title="About Me">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <p className="text-lg text-gray-200 leading-relaxed mb-8">
+              I'm a passionate Computer Science student at the University of Illinois at Urbana-Champaign, 
+              specializing in software engineering, machine learning, and distributed systems. My experience 
+              spans from developing high-performance computing solutions to creating user-friendly mobile applications.
+            </p>
+            <p className="text-lg text-gray-200 leading-relaxed">
+              Currently, I'm advancing research in parallel programming frameworks and compiler optimization 
+              while maintaining a strong focus on practical applications that solve real-world problems.
+            </p>
+          </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        viewport={{ once: true }}
-                        className="text-center"
-                    >
-                        <p className="text-lg text-gray-200 leading-relaxed mb-8">
-                            I'm a passionate Computer Science student at the University of Illinois at Urbana-Champaign,
-                            specializing in software engineering, machine learning, and distributed systems. My experience
-                            spans from developing high-performance computing solutions to creating user-friendly mobile applications.
-                        </p>
-                        <p className="text-lg text-gray-200 leading-relaxed">
-                            Currently, I'm advancing research in parallel programming frameworks and compiler optimization
-                            while maintaining a strong focus on practical applications that solve real-world problems.
-                        </p>
-                    </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="glass-effect p-8 rounded-lg"
+          >
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-4">
+                  <GraduationCap className="inline mr-2" size={24} />
+                  Quick Facts
+                </h3>
+                <div className="space-y-2 text-gray-200">
+                  <p><strong>University:</strong> University of Illinois at Urbana-Champaign</p>
+                  <p><strong>Major:</strong> Computer Science</p>
+                  <p><strong>Minor:</strong> Electrical Engineering</p>
+                  <p><strong>Expected Graduation:</strong> May 2027</p>
+                  <p><strong>GPA:</strong> 3.98</p>
                 </div>
-            </Section>
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-4">
+                  <MapPin className="inline mr-2" size={24} />
+                  Contact
+                </h3>
+                <div className="space-y-2 text-gray-200">
+                  <p>+1 217 372 8738</p>
+                  <p>advaittahilyani@gmail.com</p>
+                  <div className="flex space-x-4 mt-4">
+                    <a href="https://www.linkedin.com/in/advait-tahilyani/" target="_blank" className="text-blue-400 hover:text-blue-300">
+                      <Linkedin size={20} />
+                    </a>
+                    <a href="https://github.com/AdvaitTahilyani" target="_blank" className="text-blue-400 hover:text-blue-300">
+                      <Github size={20} />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </Section>
 
-            <Section id="experience" title="Work Experience">
-                <Timeline items={workExperience} />
-            </Section>
+                  <Section id="experience" title="Work Experience">
+        <Timeline items={workExperience} />
+      </Section>
 
-            <Section id="research" title="Research Experience">
-                <Timeline items={researchExperience} />
-            </Section>
+      <Section id="research" title="Research Experience">
+        <Timeline items={researchExperience} />
+      </Section>
+
+      <Section id="education" title="Education & Achievements">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="glass-effect p-8 rounded-lg mb-8"
+          >
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold text-white mb-4">University of Illinois at Urbana-Champaign</h3>
+              <p className="text-xl text-blue-300 mb-2">Bachelor of Science in Computer Science</p>
+              <p className="text-lg text-gray-300 mb-4">Minor in Electrical Engineering</p>
+              <div className="flex justify-center items-center space-x-8 text-gray-200">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-white">3.98</p>
+                  <p className="text-sm">GPA</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-white">May 2027</p>
+                  <p className="text-sm">Expected Graduation</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 gap-6"
+          >
+            <div className="glass-effect p-6 rounded-lg">
+              <h4 className="text-xl font-bold text-white mb-4">Academic Roles</h4>
+              <div className="space-y-3">
+                <div>
+                  <h5 className="font-semibold text-blue-300">CS 124 Tutor</h5>
+                  <p className="text-sm text-gray-300">January 2024 – Present</p>
+                  <p className="text-sm text-gray-200 mt-1">Host office hours, assisting over 200 students with Kotlin fundamentals and Android development</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="glass-effect p-6 rounded-lg">
+              <h4 className="text-xl font-bold text-white mb-4">Leadership & Organizations</h4>
+              <div className="space-y-3">
+                <div>
+                  <h5 className="font-semibold text-blue-300">Illinois Semiconductor Student Alliance</h5>
+                  <p className="text-sm text-gray-300">Software Team Lead • August 2024 – Present</p>
+                  <p className="text-sm text-gray-200 mt-1">Leading development of educational tools and RF transceiver design</p>
+                </div>
+                <div>
+                  <h5 className="font-semibold text-blue-300">Nand2Tetris Project</h5>
+                  <p className="text-sm text-gray-300">May 2024 - Present</p>
+                  <p className="text-sm text-gray-200 mt-1">Built CPU and compiler from scratch, created Snake game in custom language</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </Section>
 
             <Section id="projects" title="Projects & Leadership">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
