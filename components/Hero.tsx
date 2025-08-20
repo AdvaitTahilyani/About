@@ -171,7 +171,7 @@ const Hero = () => {
                         transition={{ delay: 1, duration: 0.8 }}
                         className="text-lg text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed"
                     >
-                        Computer Science graduate from UIUC with expertise in full-stack development,
+                        Computer Science student from UIUC with expertise in full-stack development,
                         machine learning, and high-performance computing. Currently advancing research
                         in parallel programming and compiler optimization.
                     </motion.p>
