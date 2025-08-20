@@ -14,23 +14,24 @@ const Header = () => {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-      const menuItems = [
-    { name: 'About', href: '#about' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Research', href: '#research' },
-    { name: 'Education', href: '#education' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Contact', href: '#contact' }
-  ]
+    const menuItems = [
+        { name: 'About', href: '#about' },
+        { name: 'Experience', href: '#experience' },
+        { name: 'Research', href: '#research' },
+        { name: 'Education', href: '#education' },
+        { name: 'Projects', href: '#projects' },
+        { name: 'Skills', href: '#skills' },
+        { name: 'Contact', href: '#contact' }
+    ]
 
     return (
         <motion.header
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrollY > 50
-                    ? 'glass-effect shadow-lg'
-                    : 'bg-transparent'
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrollY > 50
+                ? 'glass-effect shadow-2xl border-b border-white/10'
+                : 'bg-transparent'
                 }`}
         >
             <nav className="container mx-auto px-6 py-4">
@@ -44,14 +45,26 @@ const Header = () => {
 
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-8">
-                        {menuItems.map((item) => (
+                        {menuItems.map((item, index) => (
                             <motion.a
                                 key={item.name}
                                 href={item.href}
-                                whileHover={{ scale: 1.1 }}
-                                className="text-white hover:text-blue-300 transition-colors"
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 * index, duration: 0.5 }}
+                                whileHover={{
+                                    scale: 1.1,
+                                    textShadow: "0 0 20px rgba(59, 130, 246, 0.8)"
+                                }}
+                                className="relative text-white hover:text-blue-300 transition-all duration-300 font-medium group"
                             >
                                 {item.name}
+                                <motion.div
+                                    className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-500"
+                                    initial={{ width: 0 }}
+                                    whileHover={{ width: "100%" }}
+                                    transition={{ duration: 0.3 }}
+                                />
                             </motion.a>
                         ))}
                     </div>
@@ -60,26 +73,47 @@ const Header = () => {
                     <div className="hidden md:flex items-center space-x-4">
                         <motion.a
                             href="mailto:advaittahilyani@gmail.com"
-                            whileHover={{ scale: 1.2, rotate: 10 }}
-                            className="text-white hover:text-blue-300"
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.8, duration: 0.4 }}
+                            whileHover={{
+                                scale: 1.3,
+                                rotate: 10,
+                                boxShadow: "0 0 20px rgba(59, 130, 246, 0.6)"
+                            }}
+                            className="p-2 text-white hover:text-blue-300 transition-all duration-300 rounded-full hover:bg-white/10"
                         >
-                            <Mail size={20} />
+                            <Mail size={18} />
                         </motion.a>
                         <motion.a
                             href="https://www.linkedin.com/in/advait-tahilyani/"
                             target="_blank"
-                            whileHover={{ scale: 1.2, rotate: 10 }}
-                            className="text-white hover:text-blue-300"
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.9, duration: 0.4 }}
+                            whileHover={{
+                                scale: 1.3,
+                                rotate: 10,
+                                boxShadow: "0 0 20px rgba(59, 130, 246, 0.6)"
+                            }}
+                            className="p-2 text-white hover:text-blue-300 transition-all duration-300 rounded-full hover:bg-white/10"
                         >
-                            <Linkedin size={20} />
+                            <Linkedin size={18} />
                         </motion.a>
                         <motion.a
                             href="https://github.com/AdvaitTahilyani"
                             target="_blank"
-                            whileHover={{ scale: 1.2, rotate: 10 }}
-                            className="text-white hover:text-blue-300"
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 1.0, duration: 0.4 }}
+                            whileHover={{
+                                scale: 1.3,
+                                rotate: 10,
+                                boxShadow: "0 0 20px rgba(59, 130, 246, 0.6)"
+                            }}
+                            className="p-2 text-white hover:text-blue-300 transition-all duration-300 rounded-full hover:bg-white/10"
                         >
-                            <Github size={20} />
+                            <Github size={18} />
                         </motion.a>
                     </div>
 

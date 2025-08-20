@@ -15,11 +15,23 @@ interface TimelineItemProps {
 const TimelineItem = ({ title, company, period, description, technologies, index }: TimelineItemProps) => {
     return (
         <motion.div
-            initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
+            initial={{
+                opacity: 0,
+                x: index % 2 === 0 ? -80 : 80,
+                scale: 0.8
+            }}
+            whileInView={{
+                opacity: 1,
+                x: 0,
+                scale: 1
+            }}
+            transition={{
+                duration: 0.8,
+                delay: index * 0.2,
+                ease: "easeOut"
+            }}
             viewport={{ once: true }}
-            className={`flex items-center mb-12 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
+            className={`flex items-center mb-16 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
         >
             <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
                 <motion.div
@@ -48,8 +60,43 @@ const TimelineItem = ({ title, company, period, description, technologies, index
             </div>
 
             <div className="relative flex items-center justify-center w-8">
-                <div className="w-4 h-4 bg-blue-500 rounded-full border-4 border-white shadow-lg z-10"></div>
-                <div className="absolute w-px h-24 bg-gray-300 top-4"></div>
+                <motion.div
+                    className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full border-4 border-white shadow-xl z-10 relative"
+                    whileInView={{
+                        scale: [1, 1.3, 1],
+                        boxShadow: [
+                            "0 0 0 0 rgba(59, 130, 246, 0.4)",
+                            "0 0 20px 10px rgba(59, 130, 246, 0.1)",
+                            "0 0 0 0 rgba(59, 130, 246, 0.4)"
+                        ]
+                    }}
+                    transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        delay: index * 0.3
+                    }}
+                    viewport={{ once: true }}
+                >
+                    <motion.div
+                        className="absolute inset-1 bg-white rounded-full"
+                        animate={{
+                            scale: [0.8, 1, 0.8],
+                            opacity: [0.6, 1, 0.6]
+                        }}
+                        transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            delay: index * 0.3
+                        }}
+                    />
+                </motion.div>
+                <motion.div
+                    className="absolute w-px bg-gradient-to-b from-blue-400 to-purple-500 top-6 h-20"
+                    initial={{ height: 0 }}
+                    whileInView={{ height: 80 }}
+                    transition={{ duration: 0.8, delay: index * 0.2 + 0.3 }}
+                    viewport={{ once: true }}
+                />
             </div>
 
             <div className="w-1/2"></div>
@@ -64,7 +111,24 @@ interface TimelineProps {
 const Timeline = ({ items }: TimelineProps) => {
     return (
         <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-px h-full bg-gray-300"></div>
+            {/* Enhanced central timeline */}
+            <motion.div
+                className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-blue-400 to-transparent"
+                initial={{ height: 0 }}
+                whileInView={{ height: "100%" }}
+                transition={{ duration: 2, ease: "easeInOut" }}
+                viewport={{ once: true }}
+            />
+
+            {/* Glowing effect for the timeline */}
+            <motion.div
+                className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500/20 via-purple-500/30 to-blue-500/20 blur-sm"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 1.5, delay: 0.5 }}
+                viewport={{ once: true }}
+            />
+
             {items.map((item, index) => (
                 <TimelineItem key={index} {...item} index={index} />
             ))}
