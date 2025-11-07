@@ -17,8 +17,8 @@ const TimelineItem = ({ title, company, period, description, technologies, index
         <motion.div
             initial={{
                 opacity: 0,
-                x: index % 2 === 0 ? -80 : 80,
-                scale: 0.8
+                x: -50,
+                scale: 0.95
             }}
             whileInView={{
                 opacity: 1,
@@ -26,14 +26,14 @@ const TimelineItem = ({ title, company, period, description, technologies, index
                 scale: 1
             }}
             transition={{
-                duration: 0.8,
-                delay: index * 0.2,
+                duration: 0.6,
+                delay: index * 0.15,
                 ease: "easeOut"
             }}
             viewport={{ once: true }}
-            className={`flex items-center mb-16 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
+            className={`flex items-center mb-16 flex-row ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
         >
-            <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
+            <div className={`w-full md:w-1/2 pl-8 text-left ${index % 2 === 0 ? 'md:pr-8 md:text-right md:pl-0' : 'md:pl-8 md:text-left'}`}>
                 <motion.div
                     whileHover={{ scale: 1.01 }}
                     className="glass-effect p-6 rounded-lg card-hover"
@@ -45,7 +45,7 @@ const TimelineItem = ({ title, company, period, description, technologies, index
                         {description}
                     </div>
                     {technologies && (
-                        <div className="mt-4 flex flex-wrap gap-2">
+                        <div className={`mt-4 flex flex-wrap gap-2 justify-start ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}`}>
                             {technologies.map((tech) => (
                                 <span
                                     key={tech}
@@ -59,7 +59,7 @@ const TimelineItem = ({ title, company, period, description, technologies, index
                 </motion.div>
             </div>
 
-            <div className="relative flex items-center justify-center w-8">
+            <div className="relative flex items-center justify-center w-8 shrink-0">
                 <motion.div
                     className="w-3 h-3 bg-white dark:bg-white rounded-full border-2 border-white/20 z-10 relative"
                     whileInView={{
@@ -81,7 +81,7 @@ const TimelineItem = ({ title, company, period, description, technologies, index
                 />
             </div>
 
-            <div className="w-1/2"></div>
+            <div className="hidden md:block md:w-1/2"></div>
         </motion.div>
     )
 }
@@ -93,9 +93,9 @@ interface TimelineProps {
 const Timeline = ({ items }: TimelineProps) => {
     return (
         <div className="relative">
-            {/* Minimal central timeline */}
+            {/* Minimal central timeline - left on mobile, centered on desktop */}
             <motion.div
-                className="absolute left-1/2 transform -translate-x-1/2 w-px h-full bg-white/10"
+                className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-px h-full bg-white/10"
                 initial={{ height: 0 }}
                 whileInView={{ height: "100%" }}
                 transition={{ duration: 2, ease: "easeInOut" }}

@@ -32,9 +32,8 @@ const Header = () => {
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrollY > 50
-                ? 'glass-effect border-b border-white/10'
-                : 'bg-transparent'
+            className={`fixed top-0 w-full z-50 transition-all duration-300 glass-effect border-b border-white/10 ${
+                scrollY <= 50 && !isMenuOpen ? 'md:bg-transparent md:backdrop-blur-none md:border-transparent' : ''
                 }`}
         >
             <nav className="container mx-auto px-6 py-4">
