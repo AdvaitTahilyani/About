@@ -157,31 +157,33 @@ const ChessGame = () => {
         )}
 
         {/* Chess Board */}
-        <div className="mb-6 rounded-lg overflow-hidden border-2 border-white/20">
-          <Chessboard
-            position={fen}
-            onPieceDrop={onDrop}
-            onSquareClick={onSquareClick}
-            boardOrientation={isAdmin ? 'black' : 'white'}
-            customDarkSquareStyle={{ backgroundColor: '#1a1a1a' }}
-            customLightSquareStyle={{ backgroundColor: '#2a2a2a' }}
-            customSquareStyles={{
-              ...(selectedSquare && {
-                [selectedSquare]: {
-                  backgroundColor: 'rgba(255, 255, 0, 0.4)'
-                }
-              })
-            }}
-            customBoardStyle={{
-              borderRadius: '4px',
-            }}
-            arePiecesDraggable={true}
-            areArrowsAllowed={false}
-            customDndBackend={undefined}
-            customDropSquareStyle={{
-              boxShadow: 'inset 0 0 1px 6px rgba(255,255,255,0.75)'
-            }}
-          />
+        <div className="mb-6">
+          <div className="rounded-lg overflow-hidden border-2 border-white/20" style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+            <Chessboard
+              position={fen}
+              onPieceDrop={onDrop}
+              onSquareClick={onSquareClick}
+              boardOrientation={isAdmin ? 'black' : 'white'}
+              customDarkSquareStyle={{ backgroundColor: '#1a1a1a' }}
+              customLightSquareStyle={{ backgroundColor: '#2a2a2a' }}
+              customSquareStyles={{
+                ...(selectedSquare && {
+                  [selectedSquare]: {
+                    backgroundColor: 'rgba(255, 255, 0, 0.4)'
+                  }
+                })
+              }}
+              customBoardStyle={{
+                borderRadius: '0px',
+              }}
+              arePiecesDraggable={true}
+              areArrowsAllowed={false}
+              customDropSquareStyle={{
+                boxShadow: 'inset 0 0 1px 6px rgba(255,255,255,0.75)'
+              }}
+              boardWidth={600}
+            />
+          </div>
         </div>
 
         {/* Captured Pieces */}

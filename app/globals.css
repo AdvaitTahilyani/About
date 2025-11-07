@@ -289,16 +289,14 @@ html.light *:focus {
 }
 
 /* Chess board drag and drop fixes */
-/* Fix drag preview layer positioning */
-div[style*="position: fixed"][style*="pointer-events: none"] {
-    pointer-events: none !important;
-    will-change: transform;
-}
-
-/* Ensure drag preview follows cursor properly */
+/* Ensure chessboard container doesn't interfere with positioning */
 .react-chessboard {
     touch-action: none;
-    position: relative;
+}
+
+/* Hide the drag preview - piece will be invisible during drag */
+div[style*="position: fixed"][style*="pointer-events: none"] {
+    opacity: 0 !important;
 }
 
 /* Piece cursor states */
@@ -308,15 +306,4 @@ div[data-piece] {
 
 div[data-piece]:active {
     cursor: grabbing !important;
-}
-
-/* Override any transform issues in drag preview */
-.react-chessboard div[style*="transform"] {
-    transform-origin: center center;
-}
-
-/* Smooth drag layer rendering */
-div[style*="position: fixed"] > div {
-    backface-visibility: hidden;
-    transform: translate3d(0, 0, 0);
 }
