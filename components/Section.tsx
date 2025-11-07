@@ -20,7 +20,7 @@ const Section = ({ id, title, children, className = '' }: SectionProps) => {
                     transition={{ duration: 0.8 }}
                     viewport={{ once: true }}
                 >
-                    <h2 className="text-4xl md:text-5xl font-bold text-center text-white mb-16">
+                    <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
                         {title}
                     </h2>
                     {children}

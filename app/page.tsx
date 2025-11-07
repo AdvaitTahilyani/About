@@ -172,13 +172,13 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <p className="text-xl text-gray-100 leading-relaxed mb-8 font-light tracking-wide">
-              I'm a passionate Computer Science student at the <span className="text-blue-300 font-medium">University of Illinois at Urbana-Champaign</span>,
-              specializing in <span className="text-purple-300 font-medium">software engineering</span>, <span className="text-blue-300 font-medium">machine learning</span>, and <span className="text-purple-300 font-medium">distributed systems</span>. My experience
+            <p className="text-xl leading-relaxed mb-8 font-light tracking-wide opacity-80">
+              I'm a passionate Computer Science student at the <span className="font-medium opacity-100">University of Illinois at Urbana-Champaign</span>,
+              specializing in <span className="font-medium opacity-100">software engineering</span>, <span className="font-medium opacity-100">machine learning</span>, and <span className="font-medium opacity-100">distributed systems</span>. My experience
               spans from developing high-performance computing solutions to creating user-friendly mobile applications.
             </p>
-            <p className="text-xl text-gray-100 leading-relaxed font-light tracking-wide">
-              Currently, I'm advancing research in <span className="text-blue-300 font-medium">parallel programming frameworks</span> and <span className="text-purple-300 font-medium">compiler optimization</span>
+            <p className="text-xl leading-relaxed font-light tracking-wide opacity-80">
+              Currently, I'm advancing research in <span className="font-medium opacity-100">parallel programming frameworks</span> and <span className="font-medium opacity-100">compiler optimization</span>
               while maintaining a strong focus on practical applications that solve real-world problems.
             </p>
           </motion.div>
@@ -192,11 +192,11 @@ export default function Home() {
           >
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
-                <h3 className="text-2xl font-bold text-white mb-4">
+                <h3 className="text-2xl font-bold mb-4">
                   <GraduationCap className="inline mr-2" size={24} />
                   Quick Facts
                 </h3>
-                <div className="space-y-2 text-gray-200">
+                <div className="space-y-2 opacity-80">
                   <p><strong>University:</strong> University of Illinois at Urbana-Champaign</p>
                   <p><strong>Major:</strong> Computer Science</p>
                   <p><strong>Minor:</strong> Electrical Engineering</p>
@@ -205,18 +205,18 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-white mb-4">
+                <h3 className="text-2xl font-bold mb-4">
                   <MapPin className="inline mr-2" size={24} />
                   Contact
                 </h3>
-                <div className="space-y-2 text-gray-200">
+                <div className="space-y-2 opacity-80">
                   <p>+1 217 372 8738</p>
                   <p>advaittahilyani@gmail.com</p>
                   <div className="flex space-x-4 mt-4">
-                    <a href="https://www.linkedin.com/in/advait-tahilyani/" target="_blank" className="text-blue-400 hover:text-blue-300">
+                    <a href="https://www.linkedin.com/in/advait-tahilyani/" target="_blank" className="opacity-60 hover:opacity-100 transition-opacity">
                       <Linkedin size={20} />
                     </a>
-                    <a href="https://github.com/AdvaitTahilyani" target="_blank" className="text-blue-400 hover:text-blue-300">
+                    <a href="https://github.com/AdvaitTahilyani" target="_blank" className="opacity-60 hover:opacity-100 transition-opacity">
                       <Github size={20} />
                     </a>
                   </div>
@@ -245,33 +245,33 @@ export default function Home() {
             className="glass-effect p-8 rounded-lg mb-8"
           >
             <div className="text-center mb-8">
-              <h3 className="text-3xl font-bold text-white mb-4">University of Illinois at Urbana-Champaign</h3>
-              <p className="text-xl text-blue-300 mb-2">Bachelor of Science in Computer Science</p>
-              <p className="text-lg text-gray-300 mb-4">Minor in Electrical Engineering</p>
+              <h3 className="text-3xl font-bold mb-4">University of Illinois at Urbana-Champaign</h3>
+              <p className="text-xl mb-2">Bachelor of Science in Computer Science</p>
+              <p className="text-lg opacity-80 mb-4">Minor in Electrical Engineering</p>
 
               {/* Academic Honors */}
               <div className="flex justify-center items-center gap-4 mb-6">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border border-yellow-400/30 rounded-full"
+                  className="px-4 py-2 bg-white/5 border border-white/20 rounded-md"
                 >
-                  <span className="text-yellow-300 font-semibold text-sm">🏆 James Scholar Honors</span>
+                  <span className="font-semibold text-sm">🏆 James Scholar Honors</span>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="px-4 py-2 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border border-purple-400/30 rounded-full"
+                  className="px-4 py-2 bg-white/5 border border-white/20 rounded-md"
                 >
-                  <span className="text-purple-300 font-semibold text-sm">🎓 Dean's List Scholar</span>
+                  <span className="font-semibold text-sm">🎓 Dean's List Scholar</span>
                 </motion.div>
               </div>
 
-              <div className="flex justify-center items-center space-x-8 text-gray-200">
+              <div className="flex justify-center items-center space-x-8 opacity-80">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-white">3.98</p>
+                  <p className="text-2xl font-bold opacity-100">3.98</p>
                   <p className="text-sm">GPA</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-white">May 2027</p>
+                  <p className="text-2xl font-bold opacity-100">May 2027</p>
                   <p className="text-sm">Expected Graduation</p>
                 </div>
               </div>
@@ -286,28 +286,28 @@ export default function Home() {
             className="grid md:grid-cols-2 gap-6"
           >
             <div className="glass-effect p-6 rounded-lg">
-              <h4 className="text-xl font-bold text-white mb-4">Academic Roles</h4>
+              <h4 className="text-xl font-bold mb-4">Academic Roles</h4>
               <div className="space-y-3">
                 <div>
-                  <h5 className="font-semibold text-blue-300">CS 124 Tutor</h5>
-                  <p className="text-sm text-gray-300">January 2024 – Present</p>
-                  <p className="text-sm text-gray-200 mt-1">Host office hours, assisting over 200 students with Kotlin fundamentals and Android development</p>
+                  <h5 className="font-semibold">CS 124 Tutor</h5>
+                  <p className="text-sm opacity-60">January 2024 – Present</p>
+                  <p className="text-sm opacity-80 mt-1">Host office hours, assisting over 200 students with Kotlin fundamentals and Android development</p>
                 </div>
               </div>
             </div>
 
             <div className="glass-effect p-6 rounded-lg">
-              <h4 className="text-xl font-bold text-white mb-4">Leadership & Organizations</h4>
+              <h4 className="text-xl font-bold mb-4">Leadership & Organizations</h4>
               <div className="space-y-3">
                 <div>
-                  <h5 className="font-semibold text-blue-300">Illinois Semiconductor Student Alliance</h5>
-                  <p className="text-sm text-gray-300">Software Team Lead • August 2024 – Present</p>
-                  <p className="text-sm text-gray-200 mt-1">Leading development of educational tools and RF transceiver design</p>
+                  <h5 className="font-semibold">Illinois Semiconductor Student Alliance</h5>
+                  <p className="text-sm opacity-60">Software Team Lead • August 2024 – Present</p>
+                  <p className="text-sm opacity-80 mt-1">Leading development of educational tools and RF transceiver design</p>
                 </div>
                 <div>
-                  <h5 className="font-semibold text-blue-300">Nand2Tetris Project</h5>
-                  <p className="text-sm text-gray-300">May 2024 - Present</p>
-                  <p className="text-sm text-gray-200 mt-1">Built CPU and compiler from scratch, created Snake game in custom language</p>
+                  <h5 className="font-semibold">Nand2Tetris Project</h5>
+                  <p className="text-sm opacity-60">May 2024 - Present</p>
+                  <p className="text-sm opacity-80 mt-1">Built CPU and compiler from scratch, created Snake game in custom language</p>
                 </div>
               </div>
             </div>
@@ -340,16 +340,16 @@ export default function Home() {
           className="max-w-2xl mx-auto text-center"
         >
           <div className="glass-effect p-8 rounded-lg">
-            <p className="text-lg text-gray-200 mb-8">
+            <p className="text-lg opacity-80 mb-8">
               I'm always interested in discussing new opportunities, innovative projects,
               and potential collaborations. Feel free to reach out!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
                 href="mailto:advaittahilyani@gmail.com"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center justify-center px-6 py-3 bg-white text-black rounded-md hover:opacity-90 transition-opacity font-medium"
               >
                 <Mail className="mr-2" size={20} />
                 Send Email
@@ -357,9 +357,9 @@ export default function Home() {
               <motion.a
                 href="https://www.linkedin.com/in/advait-tahilyani/"
                 target="_blank"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center px-6 py-3 border-2 border-white text-white rounded-full hover:bg-white hover:text-gray-900 transition-all"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center justify-center px-6 py-3 border border-white/20 rounded-md hover:bg-white/5 transition-all font-medium"
               >
                 <Linkedin className="mr-2" size={20} />
                 LinkedIn

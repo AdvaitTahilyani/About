@@ -25,82 +25,61 @@ const ProjectCard = ({ title, description, technologies, period, githubUrl, live
             }}
             viewport={{ once: true }}
             whileHover={{
-                y: -12,
-                scale: 1.02,
+                y: -4,
                 transition: { duration: 0.3 }
             }}
-            className="glass-effect p-6 rounded-xl card-hover group relative overflow-hidden shadow-card"
+            className="glass-effect p-6 rounded-lg card-hover group relative overflow-hidden"
         >
-            {/* Animated gradient border */}
-            <motion.div
-                className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                    background: 'linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c)',
-                    backgroundSize: '400% 400%',
-                }}
-                animate={{
-                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                }}
-                transition={{
-                    duration: 3,
-                    ease: 'linear',
-                    repeat: Infinity,
-                }}
-            />
-            <div className="absolute inset-[1px] bg-gray-900/80 rounded-xl group-hover:bg-gray-900/60 transition-colors duration-500" />
-
-            <div className="relative z-10">
-                <div className="flex items-start justify-between mb-4">
-                    <h3 className="text-xl font-bold text-white group-hover:text-blue-300 transition-colors">
-                        {title}
-                    </h3>
-                    <div className="flex items-center text-gray-400 text-sm">
-                        <Calendar size={14} className="mr-1" />
-                        {period}
-                    </div>
+            <div className="flex items-start justify-between mb-4">
+                <h3 className="text-xl font-bold">
+                    {title}
+                </h3>
+                <div className="flex items-center opacity-60 text-sm">
+                    <Calendar size={14} className="mr-1" />
+                    {period}
                 </div>
+            </div>
 
-                <p className="text-gray-200 text-sm leading-relaxed mb-4">
-                    {description}
-                </p>
+            <p className="opacity-80 text-sm leading-relaxed mb-4">
+                {description}
+            </p>
 
-                <div className="flex flex-wrap gap-2 mb-4">
-                    {technologies.map((tech) => (
-                        <span
-                            key={tech}
-                            className="px-2 py-1 bg-purple-600/30 text-purple-200 rounded text-xs"
-                        >
-                            {tech}
-                        </span>
-                    ))}
-                </div>
+            <div className="flex flex-wrap gap-2 mb-4">
+                {technologies.map((tech) => (
+                    <span
+                        key={tech}
+                        className="px-2 py-1 bg-white/10 border border-white/20 rounded text-xs"
+                    >
+                        {tech}
+                    </span>
+                ))}
+            </div>
 
-                <div className="flex space-x-3">
-                    {githubUrl && (
-                        <motion.a
-                            href={githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            whileHover={{ scale: 1.1 }}
-                            className="flex items-center text-gray-300 hover:text-white transition-colors"
-                        >
-                            <Github size={16} className="mr-1" />
-                            <span className="text-sm">Code</span>
-                        </motion.a>
-                    )}
-                    {liveUrl && (
-                        <motion.a
-                            href={liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            whileHover={{ scale: 1.1 }}
-                            className="flex items-center text-gray-300 hover:text-white transition-colors"
-                        >
-                            <ExternalLink size={16} className="mr-1" />
-                            <span className="text-sm">Live</span>
-                        </motion.a>
-                    )}
-                </div>
+            <div className="flex space-x-3">
+                {githubUrl && (
+                    <motion.a
+                        href={githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.05 }}
+                        className="flex items-center opacity-60 hover:opacity-100 transition-opacity"
+                    >
+                        <Github size={16} className="mr-1" />
+                        <span className="text-sm">Code</span>
+                    </motion.a>
+                )}
+                {liveUrl && (
+                    <motion.a
+                        href={liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.05 }}
+                        className="flex items-center opacity-60 hover:opacity-100 transition-opacity"
+                    >
+                        <ExternalLink size={16} className="mr-1" />
+                        <span className="text-sm">Live</span>
+                    </motion.a>
+                )}
             </div>
         </motion.div>
     )
