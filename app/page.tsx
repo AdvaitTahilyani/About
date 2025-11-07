@@ -178,7 +178,7 @@ export default function Home() {
               spans from developing high-performance computing solutions to creating user-friendly mobile applications.
             </p>
             <p className="text-xl leading-relaxed font-light tracking-wide opacity-80">
-              Currently, I'm advancing research in <span className="font-medium opacity-100">parallel programming frameworks</span> and <span className="font-medium opacity-100">compiler optimization</span>
+              Currently, I'm advancing research in <span className="font-medium opacity-100">parallel programming frameworks</span> and <span className="font-medium opacity-100">compiler optimization</span>{' '}
               while maintaining a strong focus on practical applications that solve real-world problems.
             </p>
           </motion.div>
