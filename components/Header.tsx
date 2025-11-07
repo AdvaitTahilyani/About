@@ -17,14 +17,14 @@ const Header = () => {
     }, [])
 
     const menuItems = [
-        { name: 'About', href: '#about' },
-        { name: 'Experience', href: '#experience' },
-        { name: 'Research', href: '#research' },
-        { name: 'Education', href: '#education' },
-        { name: 'Projects', href: '#projects' },
-        { name: 'Skills', href: '#skills' },
+        { name: 'About', href: '/#about' },
+        { name: 'Experience', href: '/#experience' },
+        { name: 'Research', href: '/#research' },
+        { name: 'Education', href: '/#education' },
+        { name: 'Projects', href: '/#projects' },
+        { name: 'Skills', href: '/#skills' },
         { name: 'Chess', href: '/chess' },
-        { name: 'Contact', href: '#contact' }
+        { name: 'Contact', href: '/#contact' }
     ]
 
     return (
