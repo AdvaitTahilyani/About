@@ -1,11 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  trailingSlash: true,
+  // Removed 'output: export' to enable API routes for Vercel KV
   images: {
     unoptimized: true
-  },
-  distDir: 'out'
+  }
 }
 
 module.exports = nextConfig

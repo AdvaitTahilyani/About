@@ -2,6 +2,7 @@
 
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { AdminProvider } from '@/contexts/AdminContext'
+import { ChessProvider } from '@/contexts/ChessContext'
 
 export default function ClientLayout({
   children,
@@ -10,7 +11,9 @@ export default function ClientLayout({
 }) {
   return (
     <ThemeProvider>
-      <AdminProvider>{children}</AdminProvider>
+      <AdminProvider>
+        <ChessProvider>{children}</ChessProvider>
+      </AdminProvider>
     </ThemeProvider>
   )
 }
