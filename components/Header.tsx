@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Menu, X, Mail, Linkedin, Github } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
+import AdminIndicator from './AdminIndicator'
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -61,8 +62,9 @@ const Header = () => {
                         ))}
                     </div>
 
-                    {/* Social Icons and Theme Toggle */}
+                    {/* Social Icons, Admin Indicator, and Theme Toggle */}
                     <div className="hidden md:flex items-center space-x-3">
+                        <AdminIndicator />
                         <motion.a
                             href="mailto:advaittahilyani@gmail.com"
                             initial={{ opacity: 0, scale: 0 }}
@@ -104,8 +106,9 @@ const Header = () => {
                         </motion.div>
                     </div>
 
-                    {/* Mobile Menu Button and Theme Toggle */}
+                    {/* Mobile Menu Button, Admin Indicator, and Theme Toggle */}
                     <div className="md:hidden flex items-center space-x-3">
+                        <AdminIndicator />
                         <ThemeToggle />
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}

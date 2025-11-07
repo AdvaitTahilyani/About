@@ -20,7 +20,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const savedTheme = localStorage.getItem('theme') as Theme | null
     if (savedTheme) {
       setTheme(savedTheme)
-      document.documentElement.classList.toggle('light', savedTheme === 'light')
+      if (savedTheme === 'light') {
+        document.documentElement.classList.add('light')
+      } else {
+        document.documentElement.classList.remove('light')
+      }
+    } else {
+      // Default to dark mode
+      document.documentElement.classList.remove('light')
     }
   }, [])
 
@@ -28,7 +35,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const newTheme = theme === 'dark' ? 'light' : 'dark'
     setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
-    document.documentElement.classList.toggle('light', newTheme === 'light')
+    if (newTheme === 'light') {
+      document.documentElement.classList.add('light')
+    } else {
+      document.documentElement.classList.remove('light')
+    }
   }
 
   if (!mounted) {
