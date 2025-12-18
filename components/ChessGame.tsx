@@ -3,14 +3,12 @@
 import { useState, useEffect } from 'react'
 import { Chessboard } from 'react-chessboard'
 import { useChess } from '@/contexts/ChessContext'
-import { useAdmin } from '@/contexts/AdminContext'
 import { motion } from 'framer-motion'
 import { RotateCcw, Trophy, Users, Crown } from 'lucide-react'
 import type { Square } from 'chess.js'
 
 const ChessGame = () => {
     const { fen, isAdminTurn, gameOver, winner, capturedPieces, makeMove, resetGame, loading } = useChess()
-    const { isAdmin } = useAdmin()
     const [mounted, setMounted] = useState(false)
     const [selectedSquare, setSelectedSquare] = useState<Square | null>(null)
     const [moveFrom, setMoveFrom] = useState<Square | null>(null)
@@ -21,11 +19,8 @@ const ChessGame = () => {
 
     const onDrop = (sourceSquare: string, targetSquare: string) => {
         // Check if it's the correct player's turn
-        if (isAdminTurn && !isAdmin) {
-            return false // Not admin's turn
-        }
-        if (!isAdminTurn && isAdmin) {
-            return false // Not visitor's turn
+        if (isAdminTurn) {
+            return false // Not your turn
         }
 
         const success = makeMove(sourceSquare, targetSquare)
@@ -38,11 +33,8 @@ const ChessGame = () => {
 
     const onSquareClick = (square: Square) => {
         // Check if it's the correct player's turn
-        if (isAdminTurn && !isAdmin) {
-            return // Not admin's turn
-        }
-        if (!isAdminTurn && isAdmin) {
-            return // Not visitor's turn
+        if (isAdminTurn) {
+            return // Not your turn
         }
 
         // If no piece is selected, select this square
@@ -99,24 +91,24 @@ const ChessGame = () => {
                 transition={{ duration: 0.5 }}
                 className="glass-effect p-8 rounded-lg"
             >
-        {/* Game Status */}
-        <div className="mb-6 text-center">
-          <h2 className="text-3xl font-bold mb-2">Chess vs AI</h2>
-          <p className="text-sm opacity-70 mb-4 max-w-2xl mx-auto">
-            Test your skills against a neural network I trained on my own game history to mimic my playing style
-          </p>
-          <div className="flex items-center justify-center gap-4 text-sm opacity-80">
-            <div className="flex items-center gap-2">
-              <Users size={16} />
-              <span>You (White)</span>
-            </div>
-            <span>vs</span>
-            <div className="flex items-center gap-2">
-              <Crown size={16} />
-              <span>Advait AI (Black)</span>
-            </div>
-          </div>
-        </div>
+                {/* Game Status */}
+                <div className="mb-6 text-center">
+                    <h2 className="text-3xl font-bold mb-2">Chess vs AI</h2>
+                    <p className="text-sm opacity-70 mb-4 max-w-2xl mx-auto">
+                        Test your skills against a neural network I trained on my own game history to mimic my playing style
+                    </p>
+                    <div className="flex items-center justify-center gap-4 text-sm opacity-80">
+                        <div className="flex items-center gap-2">
+                            <Users size={16} />
+                            <span>You (White)</span>
+                        </div>
+                        <span>vs</span>
+                        <div className="flex items-center gap-2">
+                            <Crown size={16} />
+                            <span>Advait AI (Black)</span>
+                        </div>
+                    </div>
+                </div>
 
                 {/* Turn Indicator */}
                 {!gameOver && (
@@ -163,7 +155,7 @@ const ChessGame = () => {
                             position={fen}
                             onPieceDrop={onDrop}
                             onSquareClick={onSquareClick}
-                            boardOrientation={isAdmin ? 'black' : 'white'}
+                            boardOrientation="white"
                             customDarkSquareStyle={{ backgroundColor: '#1a1a1a' }}
                             customLightSquareStyle={{ backgroundColor: '#2a2a2a' }}
                             customSquareStyles={{
@@ -225,27 +217,22 @@ const ChessGame = () => {
                     </div>
                 </div>
 
-                {/* Reset Button (Admin Only) */}
-                {isAdmin && (
-                    <div className="text-center">
-                        <motion.button
-                            onClick={resetGame}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/20 rounded-md hover:bg-white/10 transition-colors"
-                        >
-                            <RotateCcw size={16} />
-                            <span>Reset Game</span>
-                        </motion.button>
-                    </div>
-                )}
+                {/* Reset Button */}
+                <div className="text-center">
+                    <motion.button
+                        onClick={resetGame}
+                        whileHover={{ scale: 1.05, translateY: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="btn-shine glass-effect inline-flex items-center gap-2 px-8 py-3 bg-white/5 border border-white/20 rounded-full hover:bg-white/10 transition-all duration-300 text-sm font-medium tracking-widest uppercase opacity-80 hover:opacity-100 shadow-glow"
+                    >
+                        <RotateCcw size={16} className="text-blue-400" />
+                        <span>Reset Board</span>
+                    </motion.button>
+                </div>
 
                 {/* Instructions */}
                 <div className="mt-6 text-center text-sm opacity-60">
                     <p>Click to select a piece, then click where to move it. Or drag and drop pieces.</p>
-                    {!isAdmin && (
-                        <p className="mt-1">You are playing as White</p>
-                    )}
                 </div>
             </motion.div>
         </div>
