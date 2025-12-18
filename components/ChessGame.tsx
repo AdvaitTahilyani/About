@@ -103,7 +103,7 @@ const ChessGame = () => {
         <div className="mb-6 text-center">
           <h2 className="text-3xl font-bold mb-2">Chess vs AI</h2>
           <p className="text-sm opacity-70 mb-4 max-w-2xl mx-auto">
-            Test your skills against my custom-trained neural network chess bot
+            Test your skills against a neural network I trained on my own game history to mimic my playing style
           </p>
           <div className="flex items-center justify-center gap-4 text-sm opacity-80">
             <div className="flex items-center gap-2">
@@ -113,48 +113,48 @@ const ChessGame = () => {
             <span>vs</span>
             <div className="flex items-center gap-2">
               <Crown size={16} />
-              <span>MimicBot (Black)</span>
+              <span>Advait AI (Black)</span>
             </div>
           </div>
         </div>
 
-        {/* Turn Indicator */}
-        {!gameOver && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mb-4 text-center"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/20 rounded-md">
-              {isAdminTurn ? (
-                <>
-                  <Crown size={16} className="text-yellow-400" />
-                  <span className="font-medium">Bot is thinking...</span>
-                </>
-              ) : (
-                <>
-                  <Users size={16} className="text-blue-400" />
-                  <span className="font-medium">Your Turn (White)</span>
-                </>
-              )}
-            </div>
-          </motion.div>
-        )}
+                {/* Turn Indicator */}
+                {!gameOver && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="mb-4 text-center"
+                    >
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/20 rounded-md">
+                            {isAdminTurn ? (
+                                <>
+                                    <Crown size={16} className="text-yellow-400" />
+                                    <span className="font-medium">Bot is thinking...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Users size={16} className="text-blue-400" />
+                                    <span className="font-medium">Your Turn (White)</span>
+                                </>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
 
-        {/* Game Over Message */}
-        {gameOver && winner && (
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="mb-4 p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-center"
-          >
-            <div className="flex items-center justify-center gap-2 text-green-400 font-bold text-lg">
-              <Trophy size={20} />
-              <span>{winner === 'Admin (Black)' ? 'Bot Wins!' : 'You Win!'}</span>
-            </div>
-            <p className="text-sm opacity-80 mt-2">Game will reset in 5 seconds...</p>
-          </motion.div>
-        )}
+                {/* Game Over Message */}
+                {gameOver && winner && (
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="mb-4 p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-center"
+                    >
+                        <div className="flex items-center justify-center gap-2 text-green-400 font-bold text-lg">
+                            <Trophy size={20} />
+                            <span>{winner === 'Admin (Black)' ? 'Bot Wins!' : 'You Win!'}</span>
+                        </div>
+                        <p className="text-sm opacity-80 mt-2">Game will reset in 5 seconds...</p>
+                    </motion.div>
+                )}
 
                 {/* Chess Board */}
                 <div className="mb-6">
