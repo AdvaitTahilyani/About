@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { Chess } from 'chess.js'
+import Cookies from 'js-cookie'
+import { chessBot } from '@/lib/chessBot'
 
 interface ChessContextType {
   game: Chess | null
@@ -10,12 +12,14 @@ interface ChessContextType {
   gameOver: boolean
   winner: string | null
   capturedPieces: { white: string[]; black: string[] }
-  makeMove: (from: string, to: string) => boolean
+  makeMove: (from: string, to: string) => Promise<boolean>
   resetGame: () => void
   loading: boolean
 }
 
 const ChessContext = createContext<ChessContextType | undefined>(undefined)
+
+const COOKIE_KEY = 'chess_game_state'
 
 export function ChessProvider({ children }: { children: React.ReactNode }) {
   const [game, setGame] = useState<Chess | null>(null)
@@ -27,23 +31,34 @@ export function ChessProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
   const [loading, setLoading] = useState(true)
 
-  // Fetch game state from API
-  const fetchGameState = useCallback(async () => {
+  // Fetch game state from Cookie
+  const fetchGameState = useCallback(() => {
     try {
-      const response = await fetch('/api/chess')
-      const data = await response.json()
-
+      const savedState = Cookies.get(COOKIE_KEY)
+      
       const newGame = new Chess()
-      if (data.fen) {
-        newGame.load(data.fen)
+      let savedCaptured = { white: [], black: [] }
+
+      if (savedState) {
+        const data = JSON.parse(savedState)
+        if (data.fen) {
+          try {
+            newGame.load(data.fen)
+          } catch (e) {
+            console.error('Invalid FEN in cookie, resetting', e)
+          }
+        }
+        if (data.captured) {
+          savedCaptured = data.captured
+        }
       }
 
       setGame(newGame)
       setFen(newGame.fen())
-      setCapturedPieces(data.captured || { white: [], black: [] })
+      setCapturedPieces(savedCaptured)
       setLoading(false)
     } catch (error) {
-      console.error('Failed to fetch chess state:', error)
+      console.error('Failed to load chess state from cookie:', error)
       // Fallback to new game
       const newGame = new Chess()
       setGame(newGame)
@@ -58,23 +73,19 @@ export function ChessProvider({ children }: { children: React.ReactNode }) {
     fetchGameState()
   }, [fetchGameState])
 
-  // Save game state to API
-  const saveGameState = useCallback(async (gameInstance: Chess, captured: { white: string[]; black: string[] }) => {
+  // Save game state to Cookie
+  const saveGameState = useCallback((gameInstance: Chess, captured: { white: string[]; black: string[] }) => {
     try {
-      await fetch('/api/chess', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fen: gameInstance.fen(),
-          captured
-        })
-      })
+      Cookies.set(COOKIE_KEY, JSON.stringify({
+        fen: gameInstance.fen(),
+        captured
+      }), { expires: 30 }) // Expire in 30 days
     } catch (error) {
-      console.error('Failed to save chess state:', error)
+      console.error('Failed to save chess state to cookie:', error)
     }
   }, [])
 
-  const makeMove = useCallback((from: string, to: string): boolean => {
+  const makeMove = useCallback(async (from: string, to: string): Promise<boolean> => {
     if (!game) return false
 
     try {
@@ -104,16 +115,49 @@ export function ChessProvider({ children }: { children: React.ReactNode }) {
     }
   }, [game, capturedPieces, saveGameState])
 
-  const resetGame = useCallback(async () => {
+  // Bot move logic
+  useEffect(() => {
+    const makeBotMove = async () => {
+        if (game && game.turn() === 'b' && !game.isGameOver()) {
+            // Short delay for realism
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            const bestMove = await chessBot.getBestMove(game.fen());
+            if (bestMove) {
+                // Parse "e2e4" format
+                const from = bestMove.substring(0, 2);
+                const to = bestMove.substring(2, 4);
+                // Handle promotion if present (e.g., "a7a8q")
+                const promotion = bestMove.length > 4 ? bestMove[4] : undefined;
+                
+                try {
+                    const move = game.move({ from, to, promotion: promotion || 'q' });
+                    if (move) {
+                        if (move.captured) {
+                            const newCaptured = { ...capturedPieces }
+                            newCaptured.white.push(move.captured)
+                            setCapturedPieces(newCaptured)
+                            saveGameState(game, newCaptured)
+                        } else {
+                            saveGameState(game, capturedPieces)
+                        }
+                        setFen(game.fen())
+                    }
+                } catch (e) {
+                    console.error("Bot tried invalid move:", bestMove);
+                }
+            }
+        }
+    }
+    
+    makeBotMove();
+  }, [game, fen, capturedPieces, saveGameState]);
+
+  const resetGame = useCallback(() => {
     if (!game) return
 
     try {
-      const response = await fetch('/api/chess', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reset: true })
-      })
-      const data = await response.json()
+      Cookies.remove(COOKIE_KEY)
 
       game.reset()
       setFen(game.fen())
@@ -175,7 +219,7 @@ export function useChess() {
       gameOver: false,
       winner: null,
       capturedPieces: { white: [], black: [] },
-      makeMove: () => false,
+      makeMove: () => Promise.resolve(false),
       resetGame: async () => {},
       loading: true
     }
