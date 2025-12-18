@@ -12,7 +12,7 @@ interface ChessContextType {
   gameOver: boolean
   winner: string | null
   capturedPieces: { white: string[]; black: string[] }
-  makeMove: (from: string, to: string) => Promise<boolean>
+  makeMove: (from: string, to: string) => boolean
   resetGame: () => void
   loading: boolean
 }
@@ -85,7 +85,7 @@ export function ChessProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  const makeMove = useCallback(async (from: string, to: string): Promise<boolean> => {
+  const makeMove = useCallback((from: string, to: string): boolean => {
     if (!game) return false
 
     try {
@@ -219,7 +219,7 @@ export function useChess() {
       gameOver: false,
       winner: null,
       capturedPieces: { white: [], black: [] },
-      makeMove: () => Promise.resolve(false),
+      makeMove: () => false,
       resetGame: async () => {},
       loading: true
     }

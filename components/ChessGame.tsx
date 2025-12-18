@@ -28,7 +28,7 @@ const ChessGame = () => {
       return false // Not visitor's turn
     }
 
-    const success = await makeMove(sourceSquare, targetSquare)
+    const success = makeMove(sourceSquare, targetSquare)
     if (success) {
       setMoveFrom(null)
       setSelectedSquare(null)
@@ -36,7 +36,7 @@ const ChessGame = () => {
     return success
   }
 
-  const onSquareClick = async (square: Square) => {
+  const onSquareClick = (square: Square) => {
     // Check if it's the correct player's turn
     if (isAdminTurn && !isAdmin) {
       return // Not admin's turn
@@ -60,7 +60,7 @@ const ChessGame = () => {
     }
 
     // Try to make the move
-    const success = await makeMove(moveFrom, square)
+    const success = makeMove(moveFrom, square)
     if (success) {
       setMoveFrom(null)
       setSelectedSquare(null)
@@ -253,3 +253,4 @@ const ChessGame = () => {
 }
 
 export default ChessGame
+
