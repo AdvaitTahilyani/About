@@ -24,6 +24,7 @@ export class ChessBot {
     try {
       this.session = await ort.InferenceSession.create('/chess_model.onnx', {
         executionProviders: ['wasm'],
+        graphOptimizationLevel: 'all'
       });
       this.initialized = true;
       console.log('Chess model loaded successfully');
