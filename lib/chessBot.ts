@@ -2,7 +2,7 @@ import * as ort from 'onnxruntime-web';
 import { Chess, Square, Move } from 'chess.js';
 
 // Configuration for WASM files
-ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.16.3/dist/';
+ort.env.wasm.wasmPaths = '/';
 
 export class ChessBot {
   private session: ort.InferenceSession | null = null;
@@ -15,6 +15,10 @@ export class ChessBot {
 
   async init() {
     if (this.initialized || this.loading) return;
+    
+    // Ensure we are in the browser
+    if (typeof window === 'undefined') return;
+    
     this.loading = true;
 
     try {
