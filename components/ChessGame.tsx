@@ -1,26 +1,48 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Chessboard } from 'react-chessboard'
 import { useChess } from '@/contexts/ChessContext'
 import { motion } from 'framer-motion'
 import { RotateCcw, Trophy, Users, Crown } from 'lucide-react'
 import type { Square } from 'chess.js'
 
+const MAX_BOARD_WIDTH = 600
+
 const ChessGame = () => {
     const { fen, isAdminTurn, gameOver, winner, capturedPieces, makeMove, resetGame, loading } = useChess()
     const [mounted, setMounted] = useState(false)
     const [selectedSquare, setSelectedSquare] = useState<Square | null>(null)
     const [moveFrom, setMoveFrom] = useState<Square | null>(null)
+    const [boardWidth, setBoardWidth] = useState(MAX_BOARD_WIDTH)
+    const boardContainerRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
         setMounted(true)
     }, [])
 
+    useEffect(() => {
+        const node = boardContainerRef.current
+        if (!node) return
+
+        const updateBoardWidth = () => {
+            const nextWidth = Math.min(Math.floor(node.clientWidth), MAX_BOARD_WIDTH)
+            if (nextWidth > 0) {
+                setBoardWidth(nextWidth)
+            }
+        }
+
+        updateBoardWidth()
+
+        const observer = new ResizeObserver(updateBoardWidth)
+        observer.observe(node)
+
+        return () => observer.disconnect()
+    }, [])
+
     const onDrop = (sourceSquare: string, targetSquare: string) => {
-        // Check if it's the correct player's turn
         if (isAdminTurn) {
-            return false // Not your turn
+            return false
         }
 
         const success = makeMove(sourceSquare, targetSquare)
@@ -32,32 +54,27 @@ const ChessGame = () => {
     }
 
     const onSquareClick = (square: Square) => {
-        // Check if it's the correct player's turn
         if (isAdminTurn) {
-            return // Not your turn
+            return
         }
 
-        // If no piece is selected, select this square
         if (!moveFrom) {
             setMoveFrom(square)
             setSelectedSquare(square)
             return
         }
 
-        // If clicking the same square, deselect
         if (moveFrom === square) {
             setMoveFrom(null)
             setSelectedSquare(null)
             return
         }
 
-        // Try to make the move
         const success = makeMove(moveFrom, square)
         if (success) {
             setMoveFrom(null)
             setSelectedSquare(null)
         } else {
-            // If move failed, select the new square instead
             setMoveFrom(square)
             setSelectedSquare(square)
         }
@@ -84,20 +101,19 @@ const ChessGame = () => {
     }
 
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto max-w-4xl">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="glass-effect p-8 rounded-lg"
+                className="glass-effect rounded-lg p-4 sm:p-6 md:p-8"
             >
-                {/* Game Status */}
                 <div className="mb-6 text-center">
-                    <h2 className="text-3xl font-bold mb-2">Chess vs AI</h2>
-                    <p className="text-sm opacity-70 mb-4 max-w-2xl mx-auto">
+                    <h2 className="mb-2 text-3xl font-bold">Chess vs AI</h2>
+                    <p className="mx-auto mb-4 max-w-2xl text-sm opacity-70">
                         Test your skills against a neural network I trained on my own game history to mimic my playing style
                     </p>
-                    <div className="flex items-center justify-center gap-4 text-sm opacity-80">
+                    <div className="flex flex-wrap items-center justify-center gap-3 text-sm opacity-80 sm:gap-4">
                         <div className="flex items-center gap-2">
                             <Users size={16} />
                             <span>You (White)</span>
@@ -110,14 +126,13 @@ const ChessGame = () => {
                     </div>
                 </div>
 
-                {/* Turn Indicator */}
                 {!gameOver && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className="mb-4 text-center"
                     >
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/20 rounded-md">
+                        <div className="inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/5 px-4 py-2">
                             {isAdminTurn ? (
                                 <>
                                     <Crown size={16} className="text-yellow-400" />
@@ -133,24 +148,25 @@ const ChessGame = () => {
                     </motion.div>
                 )}
 
-                {/* Game Over Message */}
                 {gameOver && winner && (
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        className="mb-4 p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-center"
+                        className="mb-4 rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-center"
                     >
-                        <div className="flex items-center justify-center gap-2 text-green-400 font-bold text-lg">
+                        <div className="flex items-center justify-center gap-2 text-lg font-bold text-green-400">
                             <Trophy size={20} />
                             <span>{winner === 'Admin (Black)' ? 'Bot Wins!' : 'You Win!'}</span>
                         </div>
-                        <p className="text-sm opacity-80 mt-2">Game will reset in 5 seconds...</p>
+                        <p className="mt-2 text-sm opacity-80">Game will reset in 5 seconds...</p>
                     </motion.div>
                 )}
 
-                {/* Chess Board */}
                 <div className="mb-6">
-                    <div className="rounded-lg overflow-hidden border-2 border-white/20" style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+                    <div
+                        ref={boardContainerRef}
+                        className="mx-auto w-full max-w-[600px] rounded-lg border-2 border-white/20 overflow-hidden"
+                    >
                         <Chessboard
                             position={fen}
                             onPieceDrop={onDrop}
@@ -173,17 +189,16 @@ const ChessGame = () => {
                             customDropSquareStyle={{
                                 boxShadow: 'inset 0 0 1px 6px rgba(255,255,255,0.75)'
                             }}
-                            boardWidth={600}
+                            boardWidth={boardWidth}
                         />
                     </div>
                 </div>
 
-                {/* Captured Pieces */}
-                <div className="grid md:grid-cols-2 gap-4 mb-6">
-                    <div className="glass-effect p-4 rounded-lg">
-                        <div className="flex items-center gap-2 mb-2">
+                <div className="mb-6 grid gap-4 md:grid-cols-2">
+                    <div className="glass-effect rounded-lg p-4">
+                        <div className="mb-2 flex items-center gap-2">
                             <Users size={16} className="opacity-60" />
-                            <h3 className="font-bold text-sm opacity-80">White Captured</h3>
+                            <h3 className="text-sm font-bold opacity-80">White Captured</h3>
                         </div>
                         <div className="flex flex-wrap gap-1">
                             {capturedPieces.white.length > 0 ? (
@@ -198,10 +213,10 @@ const ChessGame = () => {
                         </div>
                     </div>
 
-                    <div className="glass-effect p-4 rounded-lg">
-                        <div className="flex items-center gap-2 mb-2">
+                    <div className="glass-effect rounded-lg p-4">
+                        <div className="mb-2 flex items-center gap-2">
                             <Crown size={16} className="opacity-60" />
-                            <h3 className="font-bold text-sm opacity-80">Black Captured</h3>
+                            <h3 className="text-sm font-bold opacity-80">Black Captured</h3>
                         </div>
                         <div className="flex flex-wrap gap-1">
                             {capturedPieces.black.length > 0 ? (
@@ -217,20 +232,18 @@ const ChessGame = () => {
                     </div>
                 </div>
 
-                {/* Reset Button */}
                 <div className="text-center">
                     <motion.button
                         onClick={resetGame}
                         whileHover={{ scale: 1.05, translateY: -2 }}
                         whileTap={{ scale: 0.95 }}
-                        className="btn-shine glass-effect inline-flex items-center gap-2 px-8 py-3 bg-white/5 border border-white/20 rounded-full hover:bg-white/10 transition-all duration-300 text-sm font-medium tracking-widest uppercase opacity-80 hover:opacity-100 shadow-glow"
+                        className="btn-shine glass-effect inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-medium uppercase tracking-widest opacity-80 shadow-glow transition-all duration-300 hover:bg-white/10 hover:opacity-100 sm:px-8"
                     >
                         <RotateCcw size={16} className="text-blue-400" />
                         <span>Reset Board</span>
                     </motion.button>
                 </div>
 
-                {/* Instructions */}
                 <div className="mt-6 text-center text-sm opacity-60">
                     <p>Click to select a piece, then click where to move it. Or drag and drop pieces.</p>
                 </div>
@@ -240,4 +253,3 @@ const ChessGame = () => {
 }
 
 export default ChessGame
-
