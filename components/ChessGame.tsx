@@ -1,54 +1,20 @@
 'use client'
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Chessboard } from 'react-chessboard'
 import { useChess } from '@/contexts/ChessContext'
 import { motion } from 'framer-motion'
 import { RotateCcw, Trophy, Users, Crown } from 'lucide-react'
 import type { Square } from 'chess.js'
 
-const MAX_BOARD_WIDTH = 600
-const MOBILE_VIEWPORT_PADDING = 88
-
 const ChessGame = () => {
     const { fen, isAdminTurn, gameOver, winner, capturedPieces, makeMove, resetGame, loading } = useChess()
     const [mounted, setMounted] = useState(false)
     const [selectedSquare, setSelectedSquare] = useState<Square | null>(null)
     const [moveFrom, setMoveFrom] = useState<Square | null>(null)
-    const [boardWidth, setBoardWidth] = useState(MAX_BOARD_WIDTH)
-    const boardContainerRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
         setMounted(true)
-    }, [])
-
-    useLayoutEffect(() => {
-        const node = boardContainerRef.current
-        if (!node) return
-
-        const updateBoardWidth = () => {
-            const viewportWidth = Math.floor(window.visualViewport?.width ?? window.innerWidth)
-            const viewportLimitedWidth = viewportWidth < 640
-                ? Math.max(viewportWidth - MOBILE_VIEWPORT_PADDING, 240)
-                : viewportWidth
-            const nextWidth = Math.min(Math.floor(node.clientWidth), viewportLimitedWidth, MAX_BOARD_WIDTH)
-            if (nextWidth > 0) {
-                setBoardWidth(nextWidth)
-            }
-        }
-
-        updateBoardWidth()
-
-        const observer = new ResizeObserver(updateBoardWidth)
-        observer.observe(node)
-        window.addEventListener('resize', updateBoardWidth)
-        window.visualViewport?.addEventListener('resize', updateBoardWidth)
-
-        return () => {
-            observer.disconnect()
-            window.removeEventListener('resize', updateBoardWidth)
-            window.visualViewport?.removeEventListener('resize', updateBoardWidth)
-        }
     }, [])
 
     const onDrop = (sourceSquare: string, targetSquare: string) => {
@@ -117,7 +83,7 @@ const ChessGame = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="glass-effect rounded-lg p-4 sm:p-6 md:p-8"
+                className="glass-effect rounded-lg p-2 sm:p-6 md:p-8"
             >
                 <div className="mb-6 text-center">
                     <h2 className="mb-2 text-3xl font-bold">Chess vs AI</h2>
@@ -175,8 +141,7 @@ const ChessGame = () => {
 
                 <div className="mb-6">
                     <div
-                        ref={boardContainerRef}
-                        className="mx-auto w-full max-w-[600px]"
+                        className="mx-auto w-full max-w-[600px] overflow-hidden rounded-lg border-2 border-white/20"
                     >
                         <Chessboard
                             position={fen}
@@ -193,20 +158,13 @@ const ChessGame = () => {
                                 })
                             }}
                             customBoardStyle={{
-                                width: '100%',
-                                maxWidth: `${MAX_BOARD_WIDTH}px`,
-                                margin: '0 auto',
-                                borderRadius: '0.5rem',
-                                border: '2px solid rgba(255, 255, 255, 0.2)',
-                                overflow: 'hidden',
-                                boxSizing: 'border-box',
+                                borderRadius: '0px',
                             }}
                             arePiecesDraggable={true}
                             areArrowsAllowed={false}
                             customDropSquareStyle={{
                                 boxShadow: 'inset 0 0 1px 6px rgba(255,255,255,0.75)'
                             }}
-                            boardWidth={boardWidth}
                         />
                     </div>
                 </div>
