@@ -17,7 +17,7 @@ export default function ChessPage() {
         }} />
       </div>
 
-      <Section id="chess" title="Chess Challenge">
+      <Section id="chess" title="Chess Challenge" className="pt-16 sm:pt-20">
         <ChessGame />
       </Section>
     </main>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Chessboard } from 'react-chessboard'
 import { useChess } from '@/contexts/ChessContext'
 import { motion } from 'framer-motion'
@@ -8,6 +8,7 @@ import { RotateCcw, Trophy, Users, Crown } from 'lucide-react'
 import type { Square } from 'chess.js'
 
 const MAX_BOARD_WIDTH = 600
+const MOBILE_VIEWPORT_PADDING = 88
 
 const ChessGame = () => {
     const { fen, isAdminTurn, gameOver, winner, capturedPieces, makeMove, resetGame, loading } = useChess()
@@ -21,12 +22,16 @@ const ChessGame = () => {
         setMounted(true)
     }, [])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const node = boardContainerRef.current
         if (!node) return
 
         const updateBoardWidth = () => {
-            const nextWidth = Math.min(Math.floor(node.clientWidth), MAX_BOARD_WIDTH)
+            const viewportWidth = Math.floor(window.visualViewport?.width ?? window.innerWidth)
+            const viewportLimitedWidth = viewportWidth < 640
+                ? Math.max(viewportWidth - MOBILE_VIEWPORT_PADDING, 240)
+                : viewportWidth
+            const nextWidth = Math.min(Math.floor(node.clientWidth), viewportLimitedWidth, MAX_BOARD_WIDTH)
             if (nextWidth > 0) {
                 setBoardWidth(nextWidth)
             }
@@ -36,8 +41,14 @@ const ChessGame = () => {
 
         const observer = new ResizeObserver(updateBoardWidth)
         observer.observe(node)
+        window.addEventListener('resize', updateBoardWidth)
+        window.visualViewport?.addEventListener('resize', updateBoardWidth)
 
-        return () => observer.disconnect()
+        return () => {
+            observer.disconnect()
+            window.removeEventListener('resize', updateBoardWidth)
+            window.visualViewport?.removeEventListener('resize', updateBoardWidth)
+        }
     }, [])
 
     const onDrop = (sourceSquare: string, targetSquare: string) => {
@@ -165,7 +176,7 @@ const ChessGame = () => {
                 <div className="mb-6">
                     <div
                         ref={boardContainerRef}
-                        className="mx-auto w-full max-w-[600px] rounded-lg border-2 border-white/20 overflow-hidden"
+                        className="mx-auto w-full max-w-[600px]"
                     >
                         <Chessboard
                             position={fen}
@@ -182,7 +193,13 @@ const ChessGame = () => {
                                 })
                             }}
                             customBoardStyle={{
-                                borderRadius: '0px',
+                                width: '100%',
+                                maxWidth: `${MAX_BOARD_WIDTH}px`,
+                                margin: '0 auto',
+                                borderRadius: '0.5rem',
+                                border: '2px solid rgba(255, 255, 255, 0.2)',
+                                overflow: 'hidden',
+                                boxSizing: 'border-box',
                             }}
                             arePiecesDraggable={true}
                             areArrowsAllowed={false}

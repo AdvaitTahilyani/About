@@ -13,7 +13,7 @@ interface SectionProps {
 const Section = ({ id, title, children, className = '' }: SectionProps) => {
     return (
         <section id={id} className={`py-20 ${className}`}>
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto px-4 sm:px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
