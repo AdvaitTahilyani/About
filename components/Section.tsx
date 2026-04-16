@@ -12,16 +12,16 @@ interface SectionProps {
 
 const Section = ({ id, title, children, className = '' }: SectionProps) => {
     return (
-        <section id={id} className={`py-20 ${className}`}>
-            <div className="container mx-auto px-4 sm:px-6">
+        <section id={id} className={`py-12 md:py-16 ${className}`}>
+            <div className="container mx-auto px-6">
                 <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
                     viewport={{ once: true }}
                 >
-                    <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
-                        {title}
+                    <h2 className="text-xs font-medium opacity-30 mb-8 tracking-widest uppercase">
+                        // {title}
                     </h2>
                     {children}
                 </motion.div>

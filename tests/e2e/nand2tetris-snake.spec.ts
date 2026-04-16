@@ -66,7 +66,7 @@ test('nand2tetris Snake demo loads assets and responds to controls', async ({ pa
 
   await page.goto('/nand2tetris-snake')
 
-  await expect(page.getByRole('heading', { name: 'Snake on nand2tetris' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Snake on nand2tetris/i })).toBeVisible()
   await expect(page.getByText('Written in Jack for nand2tetris')).toBeVisible()
   await expect(page.getByText('class Main')).toBeVisible()
 

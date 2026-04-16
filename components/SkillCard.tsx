@@ -11,47 +11,21 @@ interface SkillCardProps {
 const SkillCard = ({ category, skills, index }: SkillCardProps) => {
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{
-                duration: 0.6,
-                delay: index * 0.1,
-                ease: "easeOut"
-            }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
             viewport={{ once: true }}
-            whileHover={{
-                y: -4,
-                transition: { duration: 0.3 }
-            }}
-            className="glass-effect p-6 rounded-lg card-hover group relative overflow-hidden"
+            className="flex flex-col md:flex-row md:gap-6 py-3 border-t first:border-t-0"
+            style={{ borderColor: 'var(--border-subtle)' }}
         >
-            <motion.h3
-                className="text-lg font-bold mb-4 text-center"
-                whileHover={{ scale: 1.02 }}
-            >
-                {category}
-            </motion.h3>
-            <div className="space-y-3">
-                {skills.map((skill, skillIndex) => (
-                    <motion.div
-                        key={skill}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{
-                            delay: (index * 0.1) + (skillIndex * 0.05),
-                            duration: 0.4,
-                            ease: "easeOut"
-                        }}
-                        viewport={{ once: true }}
-                        className="flex items-center"
-                    >
-                        <motion.div
-                            className="w-1.5 h-1.5 bg-white rounded-full mr-3"
-                        />
-                        <span className="text-sm font-medium opacity-80">
-                            {skill}
-                        </span>
-                    </motion.div>
+            <span className="text-xs opacity-25 shrink-0 md:w-36 mb-1 md:mb-0 pt-0.5">
+                {category.toLowerCase()}
+            </span>
+            <div className="flex flex-wrap gap-x-4 gap-y-1">
+                {skills.map((skill) => (
+                    <span key={skill} className="text-sm opacity-60">
+                        {skill}
+                    </span>
                 ))}
             </div>
         </motion.div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Calendar } from 'lucide-react'
+import { ExternalLink, Github } from 'lucide-react'
 
 interface ProjectCardProps {
     title: string
@@ -11,75 +11,101 @@ interface ProjectCardProps {
     githubUrl?: string
     liveUrl?: string
     index: number
+    featured?: boolean
 }
 
-const ProjectCard = ({ title, description, technologies, period, githubUrl, liveUrl, index }: ProjectCardProps) => {
+const ProjectCard = ({ title, description, technologies, period, githubUrl, liveUrl, index, featured }: ProjectCardProps) => {
+    if (featured) {
+        return (
+            <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="terminal-border rounded-md p-6 md:p-8"
+            >
+                <div className="flex flex-col md:flex-row md:items-baseline md:justify-between mb-3">
+                    <h3 className="text-xl font-semibold">{title}</h3>
+                    <span className="text-xs opacity-25">{period}</span>
+                </div>
+
+                <p className="opacity-50 text-sm leading-relaxed mb-4 max-w-2xl">
+                    {description}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mb-5">
+                    {technologies.map((tech) => (
+                        <span
+                            key={tech}
+                            className="px-2 py-0.5 border rounded text-xs opacity-40"
+                            style={{ borderColor: 'var(--border-tag)' }}
+                        >
+                            {tech}
+                        </span>
+                    ))}
+                </div>
+
+                <div className="flex items-center gap-4">
+                    {liveUrl && (
+                        <a
+                            href={liveUrl}
+                            className="flex items-center gap-1.5 text-sm opacity-60 hover:opacity-100 transition-opacity duration-200"
+                        >
+                            <ExternalLink size={14} />
+                            try it live
+                        </a>
+                    )}
+                    {githubUrl && (
+                        <a
+                            href={githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 text-sm opacity-60 hover:opacity-100 transition-opacity duration-200"
+                        >
+                            <Github size={14} />
+                            source
+                        </a>
+                    )}
+                </div>
+            </motion.div>
+        )
+    }
+
     return (
         <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{
-                duration: 0.6,
-                delay: index * 0.1,
-                ease: "easeOut"
-            }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
             viewport={{ once: true }}
-            whileHover={{
-                y: -4,
-                transition: { duration: 0.3 }
-            }}
-            className="glass-effect p-6 rounded-lg card-hover group relative overflow-hidden"
+            className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4 py-3 border-t first:border-t-0"
+            style={{ borderColor: 'var(--border-subtle)' }}
         >
-            <div className="flex items-start justify-between mb-4">
-                <h3 className="text-xl font-bold">
-                    {title}
-                </h3>
-                <div className="flex items-center opacity-60 text-sm">
-                    <Calendar size={14} className="mr-1" />
-                    {period}
-                </div>
-            </div>
-
-            <p className="opacity-80 text-sm leading-relaxed mb-4">
-                {description}
-            </p>
-
-            <div className="flex flex-wrap gap-2 mb-4">
-                {technologies.map((tech) => (
-                    <span
-                        key={tech}
-                        className="px-2 py-1 bg-white/10 border border-white/20 rounded text-xs"
-                    >
-                        {tech}
-                    </span>
-                ))}
-            </div>
-
-            <div className="flex space-x-3">
-                {githubUrl && (
-                    <motion.a
-                        href={githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.05 }}
-                        className="flex items-center opacity-60 hover:opacity-100 transition-opacity"
-                    >
-                        <Github size={16} className="mr-1" />
-                        <span className="text-sm">Code</span>
-                    </motion.a>
+            <h3 className="text-sm font-medium shrink-0">{title}</h3>
+            <p className="text-sm opacity-40 flex-1 truncate">{description}</p>
+            <div className="flex items-center gap-3 shrink-0">
+                {(githubUrl || liveUrl) && (
+                    <div className="flex items-center gap-2">
+                        {liveUrl && (
+                            <a
+                                href={liveUrl}
+                                className="opacity-40 hover:opacity-100 transition-opacity duration-200"
+                            >
+                                <ExternalLink size={12} />
+                            </a>
+                        )}
+                        {githubUrl && (
+                            <a
+                                href={githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="opacity-40 hover:opacity-100 transition-opacity duration-200"
+                            >
+                                <Github size={12} />
+                            </a>
+                        )}
+                    </div>
                 )}
-                {liveUrl && (
-                    <motion.a
-                        href={liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.05 }}
-                        className="flex items-center opacity-60 hover:opacity-100 transition-opacity"
-                    >
-                        <ExternalLink size={16} className="mr-1" />
-                        <span className="text-sm">Live</span>
-                    </motion.a>
-                )}
+                <span className="text-xs opacity-20">{period}</span>
             </div>
         </motion.div>
     )

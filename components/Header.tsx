@@ -1,157 +1,88 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { Menu, X, Mail, Linkedin, Github } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import AdminIndicator from './AdminIndicator'
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [scrollY, setScrollY] = useState(0)
+    const [scrolled, setScrolled] = useState(false)
 
     useEffect(() => {
-        const handleScroll = () => setScrollY(window.scrollY)
+        const handleScroll = () => setScrolled(window.scrollY > 20)
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
     const menuItems = [
-        { name: 'About', href: '/#about' },
-        { name: 'Experience', href: '/#experience' },
-        { name: 'Research', href: '/#research' },
-        { name: 'Education', href: '/#education' },
-        { name: 'Projects', href: '/#projects' },
-        { name: 'Skills', href: '/#skills' },
-        { name: 'Chess', href: '/chess' },
-        { name: 'Snake', href: '/nand2tetris-snake' },
-        { name: 'Contact', href: '/#contact' }
+        { name: 'experience', href: '/#experience' },
+        { name: 'research', href: '/#research' },
+        { name: 'projects', href: '/#projects' },
+        { name: 'education', href: '/#education' },
+        { name: 'chess', href: '/chess' },
+        { name: 'snake', href: '/nand2tetris-snake' },
+        { name: 'shell', href: '/toy-shell' },
     ]
 
     return (
-        <motion.header
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className={`fixed top-0 w-full z-50 transition-all duration-300 glass-effect border-b border-white/10 ${
-                scrollY <= 50 && !isMenuOpen ? 'md:bg-transparent md:backdrop-blur-none md:border-transparent' : ''
-                }`}
+        <header
+            className={`fixed top-0 w-full z-50 transition-all duration-200 ${
+                scrolled ? 'border-b backdrop-blur-md' : 'bg-transparent'
+            }`}
+            style={scrolled ? { borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-header)' } : undefined}
         >
             <nav className="container mx-auto px-6 py-4">
                 <div className="flex items-center justify-between">
-                    <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        className="text-2xl font-bold"
-                    >
-                        AT
-                    </motion.div>
+                    <a href="/" className="text-sm font-medium opacity-60 hover:opacity-100 transition-opacity duration-200">
+                        ~/advait
+                    </a>
 
-                    {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center space-x-8">
-                        {menuItems.map((item, index) => (
-                            <motion.a
-                                key={item.name}
-                                href={item.href}
-                                initial={{ opacity: 0, y: -20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.1 * index, duration: 0.5 }}
-                                whileHover={{ scale: 1.05 }}
-                                className="relative opacity-60 hover:opacity-100 transition-all duration-300 font-medium text-sm"
-                            >
-                                {item.name}
-                            </motion.a>
-                        ))}
-                    </div>
-
-                    {/* Social Icons, Admin Indicator, and Theme Toggle */}
-                    <div className="hidden md:flex items-center space-x-3">
-                        <AdminIndicator />
-                        <motion.a
-                            href="mailto:advaittahilyani@gmail.com"
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.8, duration: 0.4 }}
-                            whileHover={{ scale: 1.1 }}
-                            className="p-2 opacity-60 hover:opacity-100 transition-all duration-300"
-                        >
-                            <Mail size={18} />
-                        </motion.a>
-                        <motion.a
-                            href="https://www.linkedin.com/in/advait-tahilyani/"
-                            target="_blank"
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.9, duration: 0.4 }}
-                            whileHover={{ scale: 1.1 }}
-                            className="p-2 opacity-60 hover:opacity-100 transition-all duration-300"
-                        >
-                            <Linkedin size={18} />
-                        </motion.a>
-                        <motion.a
-                            href="https://github.com/AdvaitTahilyani"
-                            target="_blank"
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 1.0, duration: 0.4 }}
-                            whileHover={{ scale: 1.1 }}
-                            className="p-2 opacity-60 hover:opacity-100 transition-all duration-300"
-                        >
-                            <Github size={18} />
-                        </motion.a>
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 1.1, duration: 0.4 }}
-                        >
-                            <ThemeToggle />
-                        </motion.div>
-                    </div>
-
-                    {/* Mobile Menu Button, Admin Indicator, and Theme Toggle */}
-                    <div className="md:hidden flex items-center space-x-3">
-                        <AdminIndicator />
-                        <ThemeToggle />
-                        <button
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        >
-                            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button>
-                    </div>
-                </div>
-
-                {/* Mobile Menu */}
-                {isMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden mt-4 space-y-4"
-                    >
+                    <div className="hidden md:flex items-center gap-6">
                         {menuItems.map((item) => (
                             <a
                                 key={item.name}
                                 href={item.href}
-                                className="block opacity-60 hover:opacity-100 transition-all py-2 text-sm"
+                                className="text-xs opacity-40 hover:opacity-100 transition-opacity duration-200"
+                            >
+                                {item.name}
+                            </a>
+                        ))}
+                    </div>
+
+                    <div className="hidden md:flex items-center gap-3">
+                        <AdminIndicator />
+                        <ThemeToggle />
+                    </div>
+
+                    <div className="md:hidden flex items-center gap-3">
+                        <AdminIndicator />
+                        <ThemeToggle />
+                        <button
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            className="opacity-60 hover:opacity-100 transition-opacity"
+                        >
+                            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                        </button>
+                    </div>
+                </div>
+
+                {isMenuOpen && (
+                    <div className="md:hidden mt-6 pb-4 border-t pt-4 space-y-3" style={{ borderColor: 'var(--border-primary)' }}>
+                        {menuItems.map((item) => (
+                            <a
+                                key={item.name}
+                                href={item.href}
+                                className="block text-sm opacity-40 hover:opacity-100 transition-opacity py-1"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 {item.name}
                             </a>
                         ))}
-                        <div className="flex space-x-4 pt-4">
-                            <a href="mailto:advaittahilyani@gmail.com" className="opacity-60 hover:opacity-100 transition-all">
-                                <Mail size={20} />
-                            </a>
-                            <a href="https://www.linkedin.com/in/advait-tahilyani/" target="_blank" className="opacity-60 hover:opacity-100 transition-all">
-                                <Linkedin size={20} />
-                            </a>
-                            <a href="https://github.com/AdvaitTahilyani" target="_blank" className="opacity-60 hover:opacity-100 transition-all">
-                                <Github size={20} />
-                            </a>
-                        </div>
-                    </motion.div>
+                    </div>
                 )}
             </nav>
-        </motion.header>
+        </header>
     )
 }
 
