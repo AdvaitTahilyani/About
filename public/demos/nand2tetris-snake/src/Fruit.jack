@@ -1,0 +1,29 @@
+class Fruit {
+    field Square fruit;
+    field int x;
+    field int y;
+    static int size;
+
+    constructor Fruit new(int ix, int iy) {
+        let size = 3;
+        let x = ix;
+        let y = iy;
+        let fruit = Square.new(ix, iy, size);
+        return this;
+    }
+   method int getX() { return x; }
+   method int getY() { return y; }
+   method void shift(int ix, int iy) {
+        do fruit.erase();
+        do fruit.dispose();
+        let x = ix;
+        let y = iy;
+        let fruit = Square.new(ix, iy, size);
+        return;
+   }
+   method void dispose() {
+        do fruit.dispose();
+        do Memory.deAlloc(this);
+        return;
+   }
+}

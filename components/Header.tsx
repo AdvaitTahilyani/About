@@ -24,6 +24,7 @@ const Header = () => {
         { name: 'Projects', href: '/#projects' },
         { name: 'Skills', href: '/#skills' },
         { name: 'Chess', href: '/chess' },
+        { name: 'Snake', href: '/nand2tetris-snake' },
         { name: 'Contact', href: '/#contact' }
     ]
 

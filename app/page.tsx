@@ -117,7 +117,8 @@ export default function Home() {
       title: "Nand2Tetris",
       description: "Constructed simulated components including the CPU and compiler from scratch for the Nand2Tetris course. Designed a primitive version of the Snake game using a custom-created programming language.",
       period: "May 2024 - Present",
-      technologies: ["Computer Architecture", "Compiler Design", "Assembly", "Game Development"]
+      technologies: ["Computer Architecture", "Compiler Design", "Assembly", "Game Development"],
+      liveUrl: "/nand2tetris-snake"
     },
     {
       title: "NoteTaker",

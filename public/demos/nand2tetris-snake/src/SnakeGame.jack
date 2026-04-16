@@ -1,0 +1,78 @@
+class SnakeGame {
+   field Snake snake; // the square of this game
+   field Fruit fruit; // the square's current direction: 
+                        // 0=none, 1=up, 2=down, 3=left, 4=right
+    field int direction;
+    field int time;
+
+   /** Constructs a new square game. */
+   constructor SnakeGame new() {
+      // The initial square is located in (0,0), has size 30, and is not moving.
+      let fruit = Fruit.new(255, 127);
+      let time = 0;
+      let snake = Snake.new(0,0,0);
+      return this;
+   }
+
+   /** Disposes this game. */
+   method void dispose() {
+      do snake.dispose();
+      do fruit.dispose();
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Moves the square in the current direction. */
+   method void moveSquare() {
+      var int xval;
+      var int yval;
+      do snake.move(direction);
+      let time = time + 1;
+      let time = time - (100*(time/100));
+      if ((snake.getX() > (fruit.getX() - 3)) & (snake.getX() < (fruit.getX() + 3)) & (fruit.getY() > (snake.getY() - 3)) & (fruit.getY() < (snake.getY() + 3))) {
+        let xval = ((fruit.getX()+17)*time)-(509*(((fruit.getX()+17)*time)/509));
+        let yval = ((fruit.getY()+time)*43)-(253*(((fruit.getY()+time)*43)/253));
+        if (xval < 0) {
+            let xval = xval + 509;
+        }
+        if (yval < 0) {
+            let yval = yval + 509;
+        }
+        do fruit.shift(xval, yval);
+        do snake.increase();
+      }
+      do Sys.wait(40-(snake.getSize()*2));  // delays the next movement
+      return;
+   }
+
+   /** Runs the game: handles the user's inputs and moves the square accordingly */
+   method void run() {
+      var char key;  // the key currently pressed by the user
+      var boolean exit;
+      let exit = false;
+      
+      while (~exit) {
+         // waits for a key to be pressed
+         while (key = 0) {
+            let key = Keyboard.keyPressed();
+            do moveSquare();
+         }
+         if (snake.getSize() = 19) { let exit = true; }
+         if (key = 81)  { let exit = true; }     // q key
+         if (key = 131) { let direction = 2; }   // up arrow
+         if (key = 133) { let direction = 3; }   // down arrow
+         if (key = 130) { let direction = 1; }   // left arrow
+         if (key = 132) { let direction = 0; }   // right arrow
+
+         // waits for the key to be released
+         while (~(key = 0)) {
+            let key = Keyboard.keyPressed();
+            do moveSquare();
+         }
+     } // while
+     return;
+   }
+}
+
+
+
