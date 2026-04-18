@@ -96,18 +96,20 @@ export function ChessProvider({ children }: { children: React.ReactNode }) {
     if (game.turn() !== BOT_COLOR) return
     if (botBusyRef.current) return
 
-    let cancelled = false
     botBusyRef.current = true
     setBotThinking(true)
     setBotError(null)
 
     const fenAtRequest = game.fen()
 
+    // We intentionally do NOT cancel on effect cleanup. The effect reruns the
+    // moment we call setFen with the bot's move, which would otherwise race
+    // with the promise's .finally and strand the "thinking" flag as `true`.
+    // Stale-move protection is handled by comparing the live fen below.
     pickBotMove(fenAtRequest)
       .then((result) => {
-        if (cancelled) return
         const live = gameRef.current
-        // Bail if the board changed under us (reset, etc).
+        // Bail if the board changed under us (reset, undo, etc).
         if (!live || live.fen() !== fenAtRequest) return
         if (!result) return
 
@@ -125,16 +127,12 @@ export function ChessProvider({ children }: { children: React.ReactNode }) {
       })
       .catch((err) => {
         console.error('Bot move failed:', err)
-        if (!cancelled) setBotError('Bot inference failed. Try again.')
+        setBotError('Bot inference failed. Try again.')
       })
       .finally(() => {
-        if (!cancelled) setBotThinking(false)
         botBusyRef.current = false
+        setBotThinking(false)
       })
-
-    return () => {
-      cancelled = true
-    }
   }, [fen, game])
 
   const resetGame = useCallback(() => {
