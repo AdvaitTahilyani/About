@@ -55,6 +55,17 @@ html.light body {
     color: #0a0a0a;
 }
 
+/* Light mode: boost effective opacity so muted text reads darker on the pale background */
+html.light .opacity-20 { opacity: 0.4; }
+html.light .opacity-25 { opacity: 0.45; }
+html.light .opacity-30 { opacity: 0.55; }
+html.light .opacity-40 { opacity: 0.65; }
+html.light .opacity-50 { opacity: 0.75; }
+html.light .opacity-55 { opacity: 0.78; }
+html.light .opacity-60 { opacity: 0.82; }
+html.light .opacity-70 { opacity: 0.88; }
+html.light .opacity-80 { opacity: 0.92; }
+
 /* Kept for chess and nand2tetris pages that still use it */
 .glass-effect {
     background: rgba(17, 17, 17, 0.6);
