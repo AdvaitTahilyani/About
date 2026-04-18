@@ -8,7 +8,7 @@ import { RotateCcw, Trophy, Users, Crown } from 'lucide-react'
 import type { Square } from 'chess.js'
 
 const ChessGame = () => {
-    const { fen, isAdminTurn, gameOver, winner, capturedPieces, makeMove, resetGame, loading } = useChess()
+    const { fen, isAdminTurn, gameOver, winner, capturedPieces, makeMove, resetGame, loading, botError } = useChess()
     const [mounted, setMounted] = useState(false)
     const [selectedSquare, setSelectedSquare] = useState<Square | null>(null)
     const [moveFrom, setMoveFrom] = useState<Square | null>(null)
@@ -122,6 +122,16 @@ const ChessGame = () => {
                                 </>
                             )}
                         </div>
+                    </motion.div>
+                )}
+
+                {botError && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-2 text-center text-sm text-red-300"
+                    >
+                        {botError}
                     </motion.div>
                 )}
 

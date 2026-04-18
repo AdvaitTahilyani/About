@@ -1,7 +1,8 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, useCallback } from 'react'
-import { Chess } from 'chess.js'
+import { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react'
+import { Chess, Move } from 'chess.js'
+import { loadBot, pickBotMove } from '@/lib/chessBot'
 
 interface ChessContextType {
   game: Chess | null
@@ -13,126 +14,149 @@ interface ChessContextType {
   makeMove: (from: string, to: string) => boolean
   resetGame: () => void
   loading: boolean
+  botError: string | null
 }
 
 const ChessContext = createContext<ChessContextType | undefined>(undefined)
+
+const BOT_COLOR = 'b' as const
+const USER_COLOR = 'w' as const
+
+// Adds a `captured` piece onto the right capture pile for the moving side.
+function applyCapture(
+  captured: { white: string[]; black: string[] },
+  move: Move,
+): { white: string[]; black: string[] } {
+  if (!move.captured) return captured
+  if (move.color === 'w') {
+    return { ...captured, black: [...captured.black, move.captured] }
+  }
+  return { ...captured, white: [...captured.white, move.captured] }
+}
 
 export function ChessProvider({ children }: { children: React.ReactNode }) {
   const [game, setGame] = useState<Chess | null>(null)
   const [fen, setFen] = useState<string>('')
   const [capturedPieces, setCapturedPieces] = useState<{ white: string[]; black: string[] }>({
     white: [],
-    black: []
+    black: [],
   })
   const [mounted, setMounted] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [botThinking, setBotThinking] = useState(false)
+  const [botError, setBotError] = useState<string | null>(null)
 
-  // Fetch game state from API
-  const fetchGameState = useCallback(async () => {
-    try {
-      const response = await fetch('/api/chess')
-      const data = await response.json()
+  // Guards so we never queue two bot moves for the same position.
+  const botBusyRef = useRef(false)
+  const gameRef = useRef<Chess | null>(null)
 
-      const newGame = new Chess()
-      if (data.fen) {
-        newGame.load(data.fen)
-      }
-
-      setGame(newGame)
-      setFen(newGame.fen())
-      setCapturedPieces(data.captured || { white: [], black: [] })
-      setLoading(false)
-    } catch (error) {
-      console.error('Failed to fetch chess state:', error)
-      // Fallback to new game
-      const newGame = new Chess()
-      setGame(newGame)
-      setFen(newGame.fen())
-      setLoading(false)
-    }
-  }, [])
-
-  // Initialize game
   useEffect(() => {
-    setMounted(true)
-    fetchGameState()
-  }, [fetchGameState])
-
-  // Save game state to API
-  const saveGameState = useCallback(async (gameInstance: Chess, captured: { white: string[]; black: string[] }) => {
-    try {
-      await fetch('/api/chess', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fen: gameInstance.fen(),
-          captured
-        })
-      })
-    } catch (error) {
-      console.error('Failed to save chess state:', error)
-    }
-  }, [])
-
-  const makeMove = useCallback((from: string, to: string): boolean => {
-    if (!game) return false
-
-    try {
-      const move = game.move({ from, to, promotion: 'q' })
-
-      if (move) {
-        // Track captured pieces
-        if (move.captured) {
-          const newCaptured = { ...capturedPieces }
-          if (move.color === 'w') {
-            newCaptured.black.push(move.captured)
-          } else {
-            newCaptured.white.push(move.captured)
-          }
-          setCapturedPieces(newCaptured)
-          saveGameState(game, newCaptured)
-        } else {
-          saveGameState(game, capturedPieces)
-        }
-
-        setFen(game.fen())
-        return true
-      }
-      return false
-    } catch (error) {
-      return false
-    }
-  }, [game, capturedPieces, saveGameState])
-
-  const resetGame = useCallback(async () => {
-    if (!game) return
-
-    try {
-      const response = await fetch('/api/chess', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reset: true })
-      })
-      const data = await response.json()
-
-      game.reset()
-      setFen(game.fen())
-      const newCaptured = { white: [], black: [] }
-      setCapturedPieces(newCaptured)
-    } catch (error) {
-      console.error('Failed to reset chess game:', error)
-    }
+    gameRef.current = game
   }, [game])
 
-  const isAdminTurn = game ? game.turn() === 'b' : false
+  useEffect(() => {
+    setMounted(true)
+    const newGame = new Chess()
+    setGame(newGame)
+    setFen(newGame.fen())
+    setLoading(false)
+    // Warm up the ONNX session in the background so the first bot move
+    // doesn't have to wait for a 45MB model download + WASM compile.
+    loadBot().catch((err) => {
+      console.error('Failed to warm up chess bot:', err)
+      setBotError('Bot model failed to load. Refresh to try again.')
+    })
+  }, [])
+
+  const makeMove = useCallback(
+    (from: string, to: string): boolean => {
+      const current = gameRef.current
+      if (!current) return false
+      if (current.turn() !== USER_COLOR) return false
+      if (botBusyRef.current) return false
+
+      try {
+        const move = current.move({ from, to, promotion: 'q' })
+        if (!move) return false
+
+        setCapturedPieces((prev) => applyCapture(prev, move))
+        setFen(current.fen())
+        return true
+      } catch {
+        return false
+      }
+    },
+    [],
+  )
+
+  // Whenever it becomes the bot's turn, run inference and push its move.
+  useEffect(() => {
+    if (!game) return
+    if (game.isGameOver()) return
+    if (game.turn() !== BOT_COLOR) return
+    if (botBusyRef.current) return
+
+    let cancelled = false
+    botBusyRef.current = true
+    setBotThinking(true)
+    setBotError(null)
+
+    const fenAtRequest = game.fen()
+
+    pickBotMove(fenAtRequest)
+      .then((result) => {
+        if (cancelled) return
+        const live = gameRef.current
+        // Bail if the board changed under us (reset, etc).
+        if (!live || live.fen() !== fenAtRequest) return
+        if (!result) return
+
+        const move = live.move({
+          from: result.move.from,
+          to: result.move.to,
+          promotion: result.move.promotion ?? undefined,
+        })
+        if (!move) {
+          setBotError('Bot tried to play an illegal move.')
+          return
+        }
+        setCapturedPieces((prev) => applyCapture(prev, move))
+        setFen(live.fen())
+      })
+      .catch((err) => {
+        console.error('Bot move failed:', err)
+        if (!cancelled) setBotError('Bot inference failed. Try again.')
+      })
+      .finally(() => {
+        if (!cancelled) setBotThinking(false)
+        botBusyRef.current = false
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [fen, game])
+
+  const resetGame = useCallback(() => {
+    botBusyRef.current = false
+    setBotThinking(false)
+    setBotError(null)
+    const newGame = new Chess()
+    setGame(newGame)
+    setFen(newGame.fen())
+    setCapturedPieces({ white: [], black: [] })
+  }, [])
+
+  const isAdminTurn = Boolean(game && (game.turn() === BOT_COLOR || botThinking))
   const gameOver = game ? game.isGameOver() : false
   const winner = game && gameOver
     ? game.isCheckmate()
-      ? game.turn() === 'w' ? 'Admin (Black)' : 'Visitors (White)'
+      ? game.turn() === 'w'
+        ? 'Admin (Black)'
+        : 'Visitors (White)'
       : 'Draw'
     : null
 
-  // Auto reset on checkmate after 5 seconds
   useEffect(() => {
     if (gameOver && game?.isCheckmate()) {
       const timer = setTimeout(() => {
@@ -157,7 +181,8 @@ export function ChessProvider({ children }: { children: React.ReactNode }) {
         capturedPieces,
         makeMove,
         resetGame,
-        loading
+        loading,
+        botError,
       }}
     >
       {children}
@@ -176,8 +201,9 @@ export function useChess() {
       winner: null,
       capturedPieces: { white: [], black: [] },
       makeMove: () => false,
-      resetGame: async () => {},
-      loading: true
+      resetGame: () => {},
+      loading: true,
+      botError: null,
     }
   }
   return context
