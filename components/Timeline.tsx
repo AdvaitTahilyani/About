@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { Github } from 'lucide-react'
 import { ReactNode } from 'react'
 
 interface TimelineItemProps {
@@ -9,10 +10,11 @@ interface TimelineItemProps {
     period: string
     description: ReactNode
     technologies?: string[]
+    githubUrl?: string
     index: number
 }
 
-const TimelineItem = ({ title, company, period, description, technologies, index }: TimelineItemProps) => {
+const TimelineItem = ({ title, company, period, description, technologies, githubUrl, index }: TimelineItemProps) => {
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -25,6 +27,17 @@ const TimelineItem = ({ title, company, period, description, technologies, index
             <div className="flex flex-col md:flex-row md:items-baseline md:gap-4 mb-3">
                 <h3 className="text-lg font-semibold">{company}</h3>
                 <span className="text-sm opacity-40">{title}</span>
+                {githubUrl && (
+                    <a
+                        href={githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="opacity-30 hover:opacity-100 transition-opacity duration-200"
+                        aria-label={`${company} on GitHub`}
+                    >
+                        <Github size={14} />
+                    </a>
+                )}
                 <span className="text-xs opacity-25 md:ml-auto shrink-0">{period}</span>
             </div>
 
@@ -32,7 +45,7 @@ const TimelineItem = ({ title, company, period, description, technologies, index
                 {description}
             </div>
 
-            {technologies && (
+            {technologies && technologies.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                     {technologies.map((tech) => (
                         <span

@@ -17,6 +17,13 @@ html {
     --border-tag: rgba(255, 255, 255, 0.08);
     --bg-header: rgba(0, 0, 0, 0.8);
     --dot-color: rgba(255, 255, 255, 0.15);
+    --cmdk-bg: rgba(10, 10, 10, 0.95);
+    --cmdk-active: rgba(255, 255, 255, 0.06);
+    --progress-color: rgba(255, 255, 255, 0.5);
+    --statusbar-bg: rgba(10, 10, 10, 0.8);
+    --statusbar-accent: rgba(255, 255, 255, 0.9);
+    --statusbar-accent-fg: rgba(10, 10, 10, 0.95);
+    --spotlight-color: rgba(255, 255, 255, 0.06);
 }
 
 html.light {
@@ -25,6 +32,13 @@ html.light {
     --border-tag: rgba(0, 0, 0, 0.1);
     --bg-header: rgba(250, 250, 250, 0.85);
     --dot-color: rgba(0, 0, 0, 0.08);
+    --cmdk-bg: rgba(255, 255, 255, 0.97);
+    --cmdk-active: rgba(0, 0, 0, 0.05);
+    --progress-color: rgba(0, 0, 0, 0.5);
+    --statusbar-bg: rgba(255, 255, 255, 0.85);
+    --statusbar-accent: rgba(10, 10, 10, 0.9);
+    --statusbar-accent-fg: rgba(250, 250, 250, 0.95);
+    --spotlight-color: rgba(0, 0, 0, 0.04);
 }
 
 body {

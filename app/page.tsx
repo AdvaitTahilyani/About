@@ -74,7 +74,8 @@ export default function Home() {
           <li>Created scalable solution to reduce crop loss by 30% through early disease intervention</li>
         </ul>
       ),
-      technologies: ["TensorFlow", "Computer Vision", "Python", "OpenCV", "Azure"]
+      technologies: ["TensorFlow", "Computer Vision", "Python", "OpenCV", "Azure"],
+      githubUrl: "https://github.com/AdvaitTahilyani/plant-health-classifier"
     }
   ]
 
@@ -111,13 +112,15 @@ export default function Home() {
       description: "Constructed a CPU and compiler from scratch. Designed a Snake game using a custom-created programming language, running on a simulated hardware stack.",
       period: "May 2024 – Present",
       technologies: ["Computer Architecture", "Compiler Design", "Assembly", "Game Development"],
-      liveUrl: "/nand2tetris-snake"
+      liveUrl: "/nand2tetris-snake",
+      githubUrl: "https://github.com/AdvaitTahilyani/nand2tetris"
     },
     {
       title: "Aether",
       description: "AI-powered email client emphasizing privacy. Uses a lightweight local LLM for summaries, context-sensitive responses, and intelligent offline search.",
       period: "February 2025",
-      technologies: ["React Native", "PostgreSQL", "Local LLM", "AI", "Privacy-focused"]
+      technologies: ["React Native", "PostgreSQL", "Local LLM", "AI", "Privacy-focused"],
+      githubUrl: "https://github.com/AdvaitTahilyani/Aether"
     },
     {
       title: "Toy Shell",
@@ -133,19 +136,27 @@ export default function Home() {
       title: "NoteTaker",
       description: "Swift app with Whisper + Phi-3 for local transcription and summarization, expandable to RPi server with Google Drive sync.",
       period: "Jan 2024 – May 2025",
-      technologies: ["Swift", "Whisper", "Phi-3", "Raspberry Pi"]
+      technologies: ["Swift", "Whisper", "Phi-3", "Raspberry Pi"],
+      githubUrl: "https://github.com/AdvaitTahilyani/Notetaking-Software"
     },
     {
       title: "Roomie Match",
       description: "HackIllinois web app for college freshmen to find compatible roommates with filters, chat, and recommendations.",
       period: "February 2024",
-      technologies: ["React", "Recommendation Systems", "Real-time Chat"]
+      technologies: ["React", "Recommendation Systems", "Real-time Chat"],
+      githubUrl: "https://github.com/AdvaitTahilyani/RoomieMatch"
     },
     {
       title: "Illinois Semiconductor Alliance",
       description: "Software Team Lead. Built wafer-defect classification pipeline using transfer learning with 95% accuracy. Developed 3D Unity game for semiconductor education. Designed RF transceiver using BJTs.",
       period: "Aug 2024 – Present",
       technologies: ["Unity", "Transfer Learning", "3D Game Development", "RF Design"]
+    },
+    {
+      title: "CS 124 Course Tutor",
+      description: "Held office hours for 200+ students on Kotlin and Android development. Supported intro CS coursework at UIUC.",
+      period: "Jan 2024 – Dec 2025",
+      technologies: ["Kotlin", "Android", "Teaching"]
     }
   ]
 
@@ -225,9 +236,6 @@ export default function Home() {
             <span>Expected May 2027</span>
             <span>James Scholar Honors</span>
             <span>Dean's List</span>
-          </div>
-          <div className="mt-4 text-sm opacity-40">
-            CS 124 Course Tutor (Jan 2024 – Dec 2025) — office hours for 200+ students on Kotlin and Android development.
           </div>
         </motion.div>
       </Section>
