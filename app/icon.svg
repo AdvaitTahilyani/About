@@ -1,0 +1,56 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141418"/>
+      <stop offset="1" stop-color="#050506"/>
+    </linearGradient>
+    <linearGradient id="titlebar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1f1f24"/>
+      <stop offset="1" stop-color="#141418"/>
+    </linearGradient>
+    <linearGradient id="cursor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d4d4d8"/>
+    </linearGradient>
+    <radialGradient id="led-red" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#fca5a5"/>
+      <stop offset="0.45" stop-color="#ef4444"/>
+      <stop offset="1" stop-color="#7f1d1d"/>
+    </radialGradient>
+    <radialGradient id="led-yel" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#fef08a"/>
+      <stop offset="0.45" stop-color="#eab308"/>
+      <stop offset="1" stop-color="#713f12"/>
+    </radialGradient>
+    <radialGradient id="led-grn" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#bbf7d0"/>
+      <stop offset="0.45" stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#14532d"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="256" height="256" rx="52" fill="url(#body)"/>
+
+  <path d="M52 0 H204 A52 52 0 0 1 256 52 V72 H0 V52 A52 52 0 0 1 52 0Z" fill="url(#titlebar)"/>
+  <line x1="0" y1="72" x2="256" y2="72" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <circle cx="32" cy="36" r="11" fill="url(#led-red)"/>
+  <circle cx="68" cy="36" r="11" fill="url(#led-yel)"/>
+  <circle cx="104" cy="36" r="11" fill="url(#led-grn)"/>
+
+  <g stroke="rgba(255,255,255,0.035)" stroke-width="1">
+    <line x1="44" y1="96" x2="44" y2="232"/>
+    <line x1="116" y1="96" x2="116" y2="232"/>
+    <line x1="188" y1="96" x2="188" y2="232"/>
+    <line x1="8" y1="128" x2="248" y2="128"/>
+    <line x1="8" y1="200" x2="248" y2="200"/>
+  </g>
+
+  <g stroke="#ffffff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M58 128 L112 164 L58 200"/>
+  </g>
+
+  <rect x="140" y="144" width="62" height="40" rx="3" fill="url(#cursor)"/>
+
+  <rect x="1.5" y="1.5" width="253" height="253" rx="50.5" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+</svg>
